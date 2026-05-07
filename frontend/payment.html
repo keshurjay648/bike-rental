@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="booking.css" />
+    <link rel="stylesheet" href="payment.css" />
+  </head>
+  <body>
+    <header>
+      <div class="nav container">
+        <a href="index.html" class="logo">
+          <img src="img/logo.png" width="80" height="40" />
+        </a>
+      </div>
+    </header>
+
+    <section class="booking payment-section">
+      <div class="container payment-wrap">
+        <div class="booking-form payment-box">
+        <h2>Complete Payment</h2>
+        <p class="payment-subtitle">Secure checkout powered by Razorpay</p>
+
+        <div class="payment-summary">
+          <p class="payment-row">
+            <span class="label">Booking ID</span>
+            <span class="value" id="bookingId">-</span>
+          </p>
+          <p class="payment-row">
+            <span class="label">Amount</span>
+            <span class="value amount">₹<span id="bookingAmount">0</span></span>
+          </p>
+        </div>
+
+        <button id="payNowBtn">Pay with Razorpay</button>
+        <p id="paymentMessage"></p>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="payment.js"></script>
+  </body>
+</html>

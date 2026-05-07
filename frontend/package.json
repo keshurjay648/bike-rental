@@ -1,0 +1,17 @@
+{
+  "name": "bike-rental-frontend",
+  "version": "1.0.0",
+  "description": "Bike Rental Application Frontend",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'No build process needed - static files'",
+    "start": "npx serve . -p 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "keywords": ["bike", "rental", "frontend"],
+  "author": "Bike Rental Team",
+  "license": "MIT"
+}

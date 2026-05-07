@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="booking.css" />
+    <link rel="stylesheet" href="helmet-booking.css" />
+    <title>Helmet Booking | Torque Rentals</title>
+  </head>
+  <body>
+    <header>
+      <div class="nav container">
+        <a href="index.html" class="logo">
+          <img src="img/logo.png" width="80" height="40" alt="Torque Rentals logo" />
+        </a>
+        <div class="navbar">
+          <a href="index.html#home" class="nav-link">Home</a>
+          <a href="index.html#bikes" class="nav-link">Bikes</a>
+          <a href="index.html#destination" class="nav-link">Destination</a>
+          <a href="index.html#reviews" class="nav-link">Reviews</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="booking">
+      <div class="booking-hero container">
+        <div class="booking-image-wrap helmet-image-wrap">
+          <img src="img/helmet.png" alt="Rental helmet" />
+        </div>
+
+        <div class="booking-data">
+          <h1 class="booking-title">Premium Riding Helmet</h1>
+          <p class="booking-description">
+            ISI certified full-face helmet with visor lock and anti-fog protection for city and
+            highway rides.
+          </p>
+          <div class="booking-spec-grid">
+            <div class="booking-spec-item">
+              <h3>Type</h3>
+              <p>Full Face</p>
+            </div>
+            <div class="booking-spec-item">
+              <h3>Safety</h3>
+              <p>ISI / DOT Compliant</p>
+            </div>
+            <div class="booking-spec-item">
+              <h3>Sizes</h3>
+              <p>S, M, L, XL</p>
+            </div>
+          </div>
+          <h2 class="booking-price">₹<span id="helmetPrice">40</span> / hour</h2>
+        </div>
+
+        <div class="booking-actions">
+          <div class="booking-form">
+            <h3>Book Helmet</h3>
+            <input type="text" id="customerName" placeholder="Your Name" />
+            <input type="email" id="customerEmail" placeholder="Your Email" />
+            <select id="helmetSize">
+              <option value="">Select Size</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+            <input type="number" id="helmetQty" min="1" value="1" placeholder="Quantity" />
+            <input type="text" id="pickup" placeholder="Pickup Time" readonly />
+            <input type="text" id="drop" placeholder="Drop Time" readonly />
+            <div class="price-box">
+              <p>Total Hours: <span id="hours">0</span></p>
+              <p>Total Price: ₹<span id="total">0</span></p>
+            </div>
+            <button id="confirmHelmetBookingBtn" type="button">Confirm Helmet Booking</button>
+            <p id="helmetBookingMessage"></p>
+          </div>
+
+          <div class="pickup-box">
+            <h3>Helmet Pickup Point</h3>
+            <p id="helmetPickupName">Andheri West Service Desk</p>
+            <p id="helmetPickupAddress">Near Azad Nagar Metro Station, Mumbai</p>
+            <iframe
+              id="pickupMap"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Helmet pickup location"
+              src="https://maps.google.com/maps?q=Azad%20Nagar%20Metro%20Station%20Andheri%20West%20Mumbai&t=&z=14&ie=UTF8&iwloc=&output=embed"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="helmet-booking.js"></script>
+  </body>
+</html>

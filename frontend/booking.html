@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Flatpickr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="booking.css" />
+
+    <title>Booking Page</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="nav container">
+        <a href="index.html" class="logo">
+          <img src="img/logo.png" width="80" height="40" />
+        </a>
+
+        <div class="navbar">
+          <a href="index.html#home" class="nav-link">Home</a>
+          <a href="index.html#bikes" class="nav-link">Bikes</a>
+          <a href="index.html#destination" class="nav-link">Destination</a>
+          <a href="index.html#reviews" class="nav-link">Reviews</a>
+        </div>
+
+        <div class="menu-icon">
+          <div class="line1"></div>
+          <div class="line2"></div>
+          <div class="line3"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="booking">
+      <div class="booking-hero container">
+        <div class="booking-image-wrap">
+          <img id="bikeImg" alt="Selected bike" />
+        </div>
+
+        <div class="booking-data">
+          <h1 id="bikeName" class="booking-title"></h1>
+          <p id="bikeDescription" class="booking-description"></p>
+          <div class="booking-spec-grid">
+            <div class="booking-spec-item">
+              <h3>Engine</h3>
+              <p id="bikeCc">-</p>
+            </div>
+            <div class="booking-spec-item">
+              <h3>Torque</h3>
+              <p id="bikeTorque">-</p>
+            </div>
+            <div class="booking-spec-item">
+              <h3>Horsepower</h3>
+              <p id="bikeHorsepower">-</p>
+            </div>
+          </div>
+          <h2 class="booking-price">₹<span id="bikePrice"></span> / hour</h2>
+        </div>
+
+        <div class="booking-actions">
+          <!-- Content for logged-in users -->
+          <div id="loggedInContent" class="booking-form" style="display: none;">
+            <h3>Book Your Ride</h3>
+            <div class="user-info">
+              <p><strong>Booking as:</strong> <span id="loggedInUserName">-</span></p>
+              <p><strong>Email:</strong> <span id="loggedInUserEmail">-</span></p>
+            </div>
+            <input type="text" id="pickup" placeholder="Pickup Time" readonly />
+            <input type="text" id="drop" placeholder="Drop Time" readonly />
+            <div class="price-box">
+              <p>Total Hours: <span id="hours">0</span></p>
+              <p>Total Price: ₹<span id="total">0</span></p>
+            </div>
+            <button onclick="confirmBooking()" class="btn-primary">Confirm Booking</button>
+            <p id="bookingMessage"></p>
+          </div>
+
+          <!-- Content for non-logged users -->
+          <div id="notLoggedInContent" class="login-prompt" style="display: none;">
+            <div class="login-prompt-content">
+              <div class="login-icon">
+                <i class="ri-lock-line"></i>
+              </div>
+              <h3>Login Required for Booking</h3>
+              <p>Please log in to book this amazing bike. Once logged in, you'll be able to:</p>
+              <ul class="benefits-list">
+                <li><i class="ri-check-line"></i> Book bikes instantly</li>
+                <li><i class="ri-check-line"></i> Track your booking history</li>
+                <li><i class="ri-check-line"></i> Get exclusive member discounts</li>
+                <li><i class="ri-check-line"></i> Save your preferences</li>
+              </ul>
+              <div class="login-buttons">
+                <a href="login.html?redirect=booking.html" class="btn-primary">
+                  <i class="ri-login-box-line"></i> Login to Book
+                </a>
+                <a href="signup.html?redirect=booking.html" class="btn-secondary">
+                  <i class="ri-user-add-line"></i> Create Account
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pickup location (shown to both) -->
+          <div class="pickup-box">
+            <h3>Suggested Pickup Point (Mumbai)</h3>
+            <p id="pickupLocationName">-</p>
+            <p id="pickupLocationAddress">-</p>
+            <iframe
+              id="pickupMap"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mumbai pickup location"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flatpickr JS FIRST -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Your JS -->
+    <script src="booking.js"></script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torque Rentals</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <link
+  href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css"
+  rel="stylesheet"
+/>
+</head>
+<body>
+    <!--header-->
+    <header>
+        <!--nav-->
+
+        <div class="nav container">
+        <!--logo-->
+
+
+
+        <a href="#"class="logo"><img src="img/logo.png" width="80px"  height="40px" alt=""></a>
+        <!--nav links-->
+
+
+
+        <div class="navbar">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#bikes" class="nav-link">Bikes</a>
+            <a href="#destination" class="nav-link">Destination</a>
+            <a href="#reviews" class="nav-link">Reviews</a>
+            <!-- Mobile Sign up Button - shown when not logged in -->
+            <a href="signup.html" class="mobile-sign-up" id="mobile-signup-btn">Sign Up</a>
+            <!-- Mobile User Profile - shown when logged in -->
+            <div class="mobile-user-profile hidden" id="mobile-user-profile">
+                <a href="#" class="mobile-profile-link">
+                    <i class="ri-user-line"></i>
+                    <span id="mobile-user-name">User</span>
+                </a>
+            </div>
+        </div>
+        <!-- Sign up button - shown when not logged in -->
+        <a href="signup.html" class="sign-up" id="signup-btn">Sign Up</a>
+        <!-- User Profile - shown when logged in -->
+        <div class="user-profile hidden" id="user-profile">
+            <div class="profile-dropdown">
+                <button class="profile-btn" id="profile-btn">
+                    <i class="ri-user-line"></i>
+                    <span id="user-name">User</span>
+                    <i class="ri-arrow-down-s-line"></i>
+                </button>
+                <div class="profile-menu" id="profile-menu">
+                    <a href="profile.html" class="profile-menu-item">
+                        <i class="ri-user-line"></i>
+                        My Profile
+                    </a>
+                    <a href="#" class="profile-menu-item" id="logout-btn">
+                        <i class="ri-logout-box-line"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Menu icon -->
+
+
+
+         <div class="menu-icon">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+         </div>
+        </div> 
+    </header>
+    <!-- home -->
+
+
+
+     <section class="home" id="home">
+        <h1 class="home-title">Harley Davidson</h1>
+        <div class="home-content container">
+            <div class="home-data">
+                <div class="home-box">
+                    <h3>Electric Motor</h3>
+                    <h2>Revelation </h2>
+                </div>
+                <div class="home-box border-home">
+                    <h3>Torque</h3>
+                    <h2>86 Ft-Lb</h2>
+                </div>
+                <div class="home-box">
+                    <h3>Horsepower</h3>
+                    <h2>105 Hp / X78 Kw</h2>
+                </div>
+            </div>
+            <img src="img/harly.png" alt="" class="home-img">
+            <div class="helmet-box">
+                <img src="img/helmet.png" alt="" />
+                <a href="helmet-booking.html">Helmet <i class="ri-arrow-right-up-line"></i></a>
+            </div>
+        </div>
+        <div class="home-btns">
+            <a href="dealers.html" class="dealer-btn"><i class="ri-compass-3-line"></i>Find a dealer</a>
+            <a href="booking.html?bike=Harley%20Davidson%20LiveWire&price=160&img=img%2Fharly.png&cc=105%20kW%20electric%20motor&torque=116%20Nm&horsepower=105%20hp" class="ride-btn"><i class="ri-motorbike-line"></i>Rent Now</a>
+          
+        </div>
+     </section>
+     <!-- bikes -->
+
+
+
+      <section class="bikes container" id="bikes">
+        <!-- header -->
+
+
+
+         <div class="heading">
+            <span>LAST MINUTE OFFERS</span>
+            <h2>Motorcyles & Scooters for rent</h2>
+         </div>
+         <!-- bikes content -->
+
+
+
+          <div class="bikes-content">
+            
+          </div>
+      </section>
+      <section class="destination container" id="destination">
+        <div class="heading">
+          <span>Popular Routes</span>
+          <h2>Top Destinations</h2>
+        </div>
+        <div class="destination-content"></div>
+      </section>
+
+      <section class="reviews container" id="reviews">
+        <div class="heading">
+          <span>Rider Stories</span>
+          <h2>What Our Customers Say</h2>
+        </div>
+        <div class="reviews-content"></div>
+      </section>
+    <!-- link to js --> 
+
+    
+
+    <link rel="stylesheet" href="auth-ui.css">
+    <script src="main.js"></script>
+    <script src="auth-ui.js"></script>
+</body>
+</html>

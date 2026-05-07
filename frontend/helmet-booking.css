@@ -1,0 +1,16 @@
+.helmet-image-wrap img {
+  height: 380px;
+}
+
+#helmetBookingMessage {
+  font-size: 0.9rem;
+  min-height: 20px;
+}
+
+#helmetSize,
+#helmetQty {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}

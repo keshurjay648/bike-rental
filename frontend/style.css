@@ -1,0 +1,1103 @@
+@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+ *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    scroll-padding-top:2rem;
+    font-family: "Roboto", sans-serif;
+}
+
+/**varibales*/
+:root{
+    --main-color:#ff4424;
+    --second-color:#f77214;
+    --text-color:#080a08;
+    --text-alter-color:#868e96;
+    --third-color:#fde628;
+    --bg-color:#fff;
+    --container-color:#faeee4;
+}
+
+img {
+    width: 100%;
+}
+a {
+    text-decoration: none;
+}
+section {
+    padding: 3rem 0 2rem;
+}
+ /* Fluid container */
+.container {
+    max-width: 1068px;
+    margin: auto;
+    width: 100%;
+}
+
+ header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: var(--container-color);
+    backdrop-filter: blur(0);
+    transition: backdrop-filter 0.3s ease;
+ }
+
+ .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #e1dbd2;
+    min-height: 60px;
+ }
+
+ .logo {
+    padding: 0 20px;
+    flex-shrink: 0;
+ }
+
+ .logo img {
+    height: auto;
+    max-width: 120px;
+    transition: transform 0.3s ease;
+ }
+
+ .logo img:hover {
+    transform: scale(1.05);
+ }
+
+ .navbar {
+    display: flex;
+    align-items: center;
+    column-gap: 1.5rem;
+    flex-wrap: wrap;
+ }
+ 
+ /* Fluid navigation links */
+.nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.nav-link:hover {
+    color: var(--main-color);
+    transition: 0.3s;
+}
+
+ /* Fluid buttons */
+.sign-up, .mobile-sign-up {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    background: var(--text-color);
+    color: var(--bg-color);
+    text-transform: uppercase;
+}
+
+.sign-up:hover,
+.mobile-sign-up:hover{
+    background: var(--second-color);
+    transition: 0.3s;
+  }
+  
+  .mobile-sign-up{
+    display: none;
+  }
+
+  .menu-icon{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 5px;
+    cursor: pointer;
+    z-index: 200;
+    transition: 0.3s;
+  }
+
+  .menu-icon div {
+    display: block;
+    background: var(--text-color);
+    height: 2px;
+    width: 24px;
+    transition: 0.3s;
+  }
+  
+  .move .line1 {
+    transform: rotate(-45deg) translate(-5px, 5px);
+  }
+  .move .line2 {
+    opacity: 0;
+  }
+  .move .line3 {
+    transform: rotate(45deg) translate(-5px, -5px);
+}
+
+/* home */
+.home {
+    padding-top: 7rem !important;
+    background: var(--container-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.home h1{
+    font-family: "Racing Sans One", sans-serif;
+    font-size: 5.2rem;
+    line-height: 4rem;
+   
+}
+
+.home-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+}
+
+.home-data {
+    display: grid;
+    gap: 1.5rem;
+
+}
+
+.home-box {
+    display: grid;
+    gap: 4px;
+
+}
+
+.home-box h3 {
+    font-size: 0.9rem;
+
+}
+
+.home-box h2 {
+    font-size: 1rem;
+    color: var(--second-color);
+    text-transform: uppercase;
+}
+
+.border-home {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e1dbd2;
+
+}
+
+.home-img{
+    max-width: 650px;
+    width: 100%;
+}
+
+.helmet-box img {
+    max-width: 300px;
+    width: 100%;
+}
+
+.helmet-box {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.helmet-box::after {
+    content: "";
+    position: absolute;
+    top: 60px;
+    width: 180px;
+    height: 184px;
+    border: 2px solid #e1dbd2;
+    z-index: -1;
+}
+
+.helmet-box a {
+    max-width: 100px;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--text-color);
+    background: var(--third-color);
+    padding: 2px 8px;
+
+}
+
+.helmet-box i {
+    font-size: 18px;
+}
+
+.home-btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    
+}
+
+.home-btns a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 14px;
+    font-size: 600;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.home-btns i {
+    font-size: 17px;
+}
+
+.dealer-btn {
+    background: var(--third-color);
+}
+
+.ride-btn {
+    background: var(--bg-color);
+}
+
+.home-btns a:hover {
+    background: var(--second-color);
+    color: var(--bg-color);
+    transition: 0.3s;
+}
+
+/* Fluid heading section */
+.heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.heading span {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--second-color);
+    text-transform: uppercase;
+}
+
+.heading h2 {
+    font-size: 1.8rem;
+}
+
+.bikes-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.bike-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    padding: 15px;
+    background: var(--bg-color);
+    border: 1px solid hsl(0deg 0% 54% / 14%);
+    
+}
+
+.bike-box:hover {
+    box-shadow: 0 4px 16px rgb(0 0 0 / 10%);
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.bike-img {
+    max-width: 100%;
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    object-position: center;
+}
+
+.tag {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #28a745;
+    background: hsl(134,61%, 41%, 0.14);
+    padding: 2px 10px;
+    border-radius: 0.5rem;    
+}
+
+.title-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.title-data h2{
+    
+    min-height: 40px;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.title-data p{
+    min-height: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-alter-color);
+}
+
+.bike-price {
+    color: var(--second-color);
+}
+
+.bike-price span {
+    font-size: 0.7rem;
+    color: var(--text-alter-color);
+}
+
+.book-btn {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    background: var(--second-color);
+    color: var(--bg-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: auto;
+
+}
+
+.book-btn:hover {
+    background: var(--main-color);
+    transition: 0.3s;
+}
+
+.flatpickr-calendar {
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.flatpickr-day.selected {
+    background: #ff4424;
+    border-color: #ff4424;
+}
+
+.flatpickr-time input {
+    font-weight: bold;
+}
+
+.bikeImg {
+    max-width: 100%;
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    object-position: center;
+}
+
+.destination-content,
+.reviews-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.destination-card,
+.review-card {
+    background: var(--bg-color);
+    border: 1px solid hsl(0deg 0% 54% / 14%);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.destination-card h3,
+.review-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.destination-card p,
+.review-card p {
+    color: var(--text-alter-color);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.review-card span {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--second-color);
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+}
+
+/* Responsive Design for All Devices */
+
+/* Large Desktop - 1200px and up */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .home h1 {
+        font-size: 6rem;
+        line-height: 5rem;
+    }
+    
+    .bikes-content {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .home-img {
+        max-width: 700px;
+    }
+}
+
+/* Desktop - 1024px to 1199px */
+@media (max-width: 1199px) and (min-width: 1024px) {
+    .container {
+        max-width: 1024px;
+        padding: 0 20px;
+    }
+    
+    .home h1 {
+        font-size: 4.5rem;
+        line-height: 4rem;
+    }
+    
+    .home-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .bikes-content {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.2rem;
+    }
+    
+    .bike-box {
+        padding: 12px;
+    }
+    
+    .bike-img {
+        height: 180px;
+    }
+    
+    .destination-content,
+    .reviews-content {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem;
+    }
+    
+    section {
+        padding: 2rem 0 1.5rem;
+    }
+}
+
+/* Tablet Landscape - 768px to 1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+    
+    .nav {
+        padding: 15px 0;
+    }
+    
+    .navbar {
+        column-gap: 1rem;
+    }
+    
+    .nav-link {
+        font-size: 0.85rem;
+    }
+    
+    .home h1 {
+        font-size: 3.5rem;
+        line-height: 3rem;
+    }
+    
+    .home-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .home-img {
+        max-width: 500px;
+    }
+    
+    .bikes-content {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.2rem;
+    }
+    
+    .bike-box {
+        padding: 12px;
+    }
+    
+    .bike-img {
+        height: 180px;
+    }
+    
+    .destination-content,
+    .reviews-content {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.2rem;
+    }
+    
+    section {
+        padding: 2rem 0 1.5rem;
+    }
+}
+
+/* Tablet Portrait - 600px to 767px */
+@media (max-width: 767px) and (min-width: 600px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .nav {
+        padding: 12px 0;
+    }
+    
+    .navbar {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--container-color);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        border-bottom: 1px solid #e1dbd2;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 99;
+    }
+    
+    .navbar.show {
+        display: flex;
+    }
+    
+    .nav-link {
+        font-size: 1rem;
+        padding: 10px 0;
+        width: 100%;
+        border-bottom: 1px solid #e1dbd2;
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .sign-up {
+        display: none;
+    }
+    
+    .mobile-sign-up {
+        display: block;
+        background: var(--main-color);
+        color: white;
+        text-align: center;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+    
+    .menu-icon {
+        display: flex;
+    }
+    
+    .home {
+        padding-top: 6rem !important;
+    }
+    
+    .home h1 {
+        font-size: 2.8rem;
+        line-height: 2.5rem;
+        text-align: center;
+    }
+    
+    .home-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .home-img {
+        max-width: 400px;
+    }
+    
+    .home-data {
+        text-align: center;
+    }
+    
+    .home-btns {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .bikes-content {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .bike-box {
+        padding: 10px;
+    }
+    
+    .bike-img {
+        height: 160px;
+    }
+    
+    .title-price {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .destination-content,
+    .reviews-content {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .heading {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .heading h2 {
+        font-size: 1.5rem;
+    }
+    
+    .heading span {
+        font-size: 0.9rem;
+    }
+    
+    section {
+        padding: 1.5rem 0 1rem;
+    }
+}
+
+/* Mobile Landscape - 480px to 599px */
+@media (max-width: 599px) and (min-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .nav {
+        padding: 10px 0;
+    }
+    
+    .logo {
+        padding: 0 12px;
+    }
+    
+    .logo img {
+        width: 60px;
+        height: 30px;
+    }
+    
+    .home {
+        padding-top: 5rem !important;
+    }
+    
+    .home h1 {
+        font-size: 2.2rem;
+        line-height: 2rem;
+    }
+    
+    .home-content {
+        gap: 1rem;
+    }
+    
+    .home-img {
+        max-width: 350px;
+    }
+    
+    .home-box h3 {
+        font-size: 0.8rem;
+    }
+    
+    .home-box h2 {
+        font-size: 0.9rem;
+    }
+    
+    .bikes-content {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .bike-box {
+        padding: 8px;
+    }
+    
+    .bike-img {
+        height: 140px;
+    }
+    
+    .title-data h2 {
+        font-size: 1rem;
+        min-height: 35px;
+    }
+    
+    .title-data p{
+        font-size: 0.75rem;
+        min-height: 18px;
+    }
+    
+    .bike-price {
+        font-size: 0.9rem;
+    }
+    
+    .book-btn {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    
+    .destination-content,
+    .reviews-content {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .destination-card,
+    .review-card {
+        padding: 0.8rem;
+    }
+    
+    .destination-card h3,
+    .review-card h3 {
+        font-size: 1rem;
+    }
+    
+    .destination-card p,
+    .review-card p {
+        font-size: 0.85rem;
+    }
+    
+    .review-card span {
+        font-size: 0.75rem;
+    }
+    
+    .heading h2 {
+        font-size: 1.4rem;
+    }
+    
+    .heading span {
+        font-size: 0.9rem;
+    }
+    
+    section {
+        padding: 1rem 0 0.8rem;
+    }
+}
+
+/* Mobile Portrait - 320px to 479px */
+@media (max-width: 479px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .nav {
+        padding: 8px 0;
+    }
+    
+    .logo {
+        padding: 0 10px;
+    }
+    
+    .logo img {
+        width: 50px;
+        height: 25px;
+    }
+    
+    .menu-icon div {
+        width: 20px;
+        height: 2px;
+    }
+    
+    .home {
+        padding-top: 4rem !important;
+    }
+    
+    .home h1 {
+        font-size: 1.8rem;
+        line-height: 1.6rem;
+    }
+    
+    .home-content {
+        gap: 0.8rem;
+    }
+    
+    .home-img {
+        max-width: 300px;
+    }
+    
+    .home-box h3 {
+        font-size: 0.75rem;
+    }
+    
+    .home-box h2 {
+        font-size: 0.85rem;
+    }
+    
+    .home-btns {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .home-btns a {
+        width: 200px;
+        justify-content: center;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .bikes-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .bike-box {
+        padding: 15px;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .bike-img {
+        height: 200px;
+    }
+    
+    .title-data h2 {
+        font-size: 1.1rem;
+        min-height: 40px;
+    }
+    
+    .title-data p{
+        font-size: 0.8rem;
+        min-height: 20px;
+    }
+    
+    .bike-price {
+        font-size: 1rem;
+    }
+    
+    .book-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .tag {
+        font-size: 0.65rem;
+        padding: 1px 8px;
+    }
+    
+    .destination-content,
+    .reviews-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .destination-card,
+    .review-card {
+        padding: 1rem;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .destination-card h3,
+    .review-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .destination-card p,
+    .review-card p {
+        font-size: 0.9rem;
+    }
+    
+    .review-card span {
+        font-size: 0.8rem;
+    }
+    
+    .heading h2 {
+        font-size: 1.3rem;
+    }
+    
+    .heading span {
+        font-size: 0.85rem;
+    }
+    
+    section {
+        padding: 1rem 0 0.5rem;
+    }
+    
+    .helmet-box img {
+        max-width: 250px;
+    }
+    
+    .helmet-box::after {
+        top: 50px;
+        width: 150px;
+        height: 154px;
+    }
+    
+    .helmet-box a {
+        font-size: 0.8rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Small Mobile - 320px and below */
+@media (max-width: 320px) {
+    .container {
+        padding: 0 8px;
+    }
+    
+    .home h1 {
+        font-size: 1.6rem;
+        line-height: 1.4rem;
+    }
+    
+    .bike-box {
+        padding: 10px;
+    }
+    
+    .bike-img {
+        height: 180px;
+    }
+    
+    .title-data h2 {
+        font-size: 1rem;
+    }
+    
+    .title-data p{
+        font-size: 0.75rem;
+    }
+    
+    .bike-price {
+        font-size: 1rem;
+    }
+    
+    .book-btn {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+    
+    .destination-card h3,
+    .review-card h3 {
+        font-size: 1rem;
+    }
+    
+    .destination-card p,
+    .review-card p {
+        font-size: 0.85rem;
+    }
+    
+    .review-card span {
+        font-size: 0.75rem;
+    }
+    
+    .heading h2 {
+        font-size: 1.2rem;
+    }
+    
+    .heading span {
+        font-size: 0.85rem;
+    }
+    
+    .helmet-box img {
+        max-width: 250px;
+    }
+    
+    .helmet-box::after {
+        top: 50px;
+        width: 150px;
+        height: 154px;
+    }
+    
+    .helmet-box a {
+        font-size: 0.8rem;
+        padding: 2px 6px;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo img,
+    .bike-img,
+    .home-img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link,
+    .sign-up,
+    .mobile-sign-up,
+    .book-btn,
+    .home-btns a,
+    .helmet-box a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bike-box,
+    .destination-card,
+    .review-card {
+        margin-bottom: 8px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .nav,
+    .menu-icon,
+    .sign-up,
+    .mobile-sign-up,
+    .book-btn,
+    .home-btns,
+    .helmet-box a {
+        display: none !important;
+    }
+    
+    .home {
+        padding-top: 0 !important;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .bike-box,
+    .destination-card,
+    .review-card {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+}
+
