@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torque Rentals</title>
+    <meta name="description" content="Rent motorcycles and scooters in Mumbai. BMW, Honda, Yamaha, TVS and more — hourly rentals with free cancellation.">
+    <meta property="og:title" content="Torque Rentals — Bikes & Scooters for Rent">
+    <meta property="og:description" content="Rent motorcycles and scooters in Mumbai. BMW, Honda, Yamaha, TVS and more — hourly rentals with free cancellation.">
+    <meta property="og:image" content="img/harly.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Torque Rentals — Bikes & Scooters for Rent">
+    <meta name="twitter:description" content="Rent motorcycles and scooters in Mumbai. Hourly rentals with free cancellation.">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <link
@@ -55,6 +63,10 @@
                     <a href="profile.html" class="profile-menu-item">
                         <i class="ri-user-line"></i>
                         My Profile
+                    </a>
+                    <a href="my-bookings.html" class="profile-menu-item">
+                        <i class="ri-calendar-check-line"></i>
+                        My Bookings
                     </a>
                     <a href="#" class="profile-menu-item" id="logout-btn">
                         <i class="ri-logout-box-line"></i>
@@ -114,18 +126,35 @@
       <section class="bikes container" id="bikes">
         <!-- header -->
 
-
-
          <div class="heading">
             <span>LAST MINUTE OFFERS</span>
             <h2>Motorcyles & Scooters for rent</h2>
          </div>
+
+         <!-- search & filter bar -->
+         <div class="bikes-controls">
+           <div class="search-box">
+             <i class="ri-search-line"></i>
+             <input type="text" id="bike-search" placeholder="Search bikes or scooters…" autocomplete="off">
+           </div>
+           <div class="filter-group">
+             <button class="filter-btn active" data-type="All">All</button>
+             <button class="filter-btn" data-type="Naked">Naked</button>
+             <button class="filter-btn" data-type="Sports">Sports</button>
+             <button class="filter-btn" data-type="Adventure">Adventure</button>
+             <button class="filter-btn" data-type="Scooter">Scooter</button>
+           </div>
+           <div class="price-filter">
+             <label for="price-range">Max price: <span id="price-label">₹250/hr</span></label>
+             <input type="range" id="price-range" min="80" max="250" value="250" step="10">
+           </div>
+         </div>
+
+         <!-- no results message -->
+         <p class="no-results hidden" id="no-results">No bikes match your search. Try different filters.</p>
+
          <!-- bikes content -->
-
-
-
           <div class="bikes-content">
-            
           </div>
       </section>
       <section class="destination container" id="destination">
@@ -147,7 +176,54 @@
 
     
 
+    <!-- Bike Quick-View Modal -->
+    <div class="modal-overlay hidden" id="bikeModal">
+      <div class="bike-modal-card">
+        <button class="bike-modal-close" id="bikeModalClose" aria-label="Close"><i class="ri-close-line"></i></button>
+        <img id="modalBikeImg" src="" alt="" class="bike-modal-img" />
+        <div class="bike-modal-body">
+          <span class="tag" id="modalBikeTag"></span>
+          <h2 id="modalBikeName"></h2>
+          <p id="modalBikeType" class="bike-modal-type"></p>
+          <div class="bike-modal-specs">
+            <div class="bike-modal-spec"><span>Engine</span><strong id="modalBikeCc"></strong></div>
+            <div class="bike-modal-spec"><span>Torque</span><strong id="modalBikeTorque"></strong></div>
+            <div class="bike-modal-spec"><span>Power</span><strong id="modalBikeHp"></strong></div>
+          </div>
+          <div class="bike-modal-footer">
+            <span class="bike-modal-price">₹<span id="modalBikePrice"></span><small>/hour</small></span>
+            <a href="#" id="modalBookBtn" class="book-btn">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top hidden" id="scrollTopBtn" aria-label="Scroll to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <img src="img/logo.png" alt="Torque Rentals" height="36" />
+          <p>Ride free. Ride smart.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#bikes">Bikes</a>
+          <a href="dealers.html">Dealers</a>
+          <a href="helmet-booking.html">Helmets</a>
+          <a href="profile.html">Profile</a>
+          <a href="my-bookings.html">My Bookings</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Torque Rentals. All rights reserved.</p>
+      </div>
+    </footer>
+
     <link rel="stylesheet" href="auth-ui.css">
+    <script src="toast.js"></script>
     <script src="main.js"></script>
     <script src="auth-ui.js"></script>
 </body>

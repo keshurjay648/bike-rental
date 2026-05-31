@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5002/api";
+const API_BASE_URL = "http://localhost:5003/api";
 
 const paymentMessage = document.getElementById("paymentMessage");
 const payNowBtn = document.getElementById("payNowBtn");
@@ -74,8 +74,9 @@ async function startPayment() {
             response.razorpay_payment_id,
             response.razorpay_signature
           );
-          setPaymentMessage("Payment successful. Booking confirmed.");
+          setPaymentMessage("Payment successful! Redirecting…");
           localStorage.removeItem("booking");
+          setTimeout(() => { window.location.href = "booking-success.html"; }, 800);
         } catch (error) {
           setPaymentMessage(error.message, true);
         }

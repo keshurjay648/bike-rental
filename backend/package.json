@@ -1,9 +1,11 @@
 {
-  "name": "bike-rental-backend",
+  "name": "torque-rentals-backend",
   "version": "1.0.0",
-  "description": "Backend API for bike rental app",
+  "description": "Torque Rentals — Backend API",
   "main": "src/server.js",
   "type": "module",
+  "author": "Jay Keshur <keshurjay648@gmail.com>",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"

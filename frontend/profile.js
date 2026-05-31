@@ -167,154 +167,50 @@ class ProfileManager {
 
     // Delete account
     async deleteAccount() {
-        try {
-            // Show loading state
-            const deleteBtn = document.getElementById('delete-account-btn');
-            const originalText = deleteBtn.innerHTML;
-            deleteBtn.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Deleting...';
-            deleteBtn.disabled = true;
+        const deleteBtn = document.getElementById('delete-account-btn');
+        const originalHTML = deleteBtn.innerHTML;
 
+        // Show loading state
+        deleteBtn.innerHTML = '<i class="ri-loader-4-line"></i> Deleting...';
+        deleteBtn.disabled = true;
+
+        try {
             const token = localStorage.getItem('authToken');
-            const currentUser = this.getCurrentUser();
-            
-            if (!currentUser || !currentUser.email) {
-                this.handleDeleteError('User information not found. Please log out and log in again.');
-                return;
+
+            if (!token) {
+                throw new Error('No auth token found. Please log in again.');
             }
 
-            // Try backend API first for complete database deletion
-            if (token) {
-                try {
-                    // First, attempt to delete user's bookings from database
-                    await this.deleteUserBookings(token, currentUser.email);
-                    
-                    // Then, delete the user account from database
-                    const response = await fetch('http://localhost:5002/api/auth/delete-account', {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                            email: currentUser.email,
-                            userId: currentUser.id
-                        })
-                    });
-
-                    if (response.ok) {
-                        const result = await response.json();
-                        console.log('Database deletion successful:', result);
-                        
-                        // Clear local storage after successful database deletion
-                        this.deleteAccountLocally();
-                        return;
-                    } else {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Failed to delete account from database');
-                    }
-                } catch (apiError) {
-                    console.error('Database deletion error:', apiError);
-                    
-                    // If database deletion fails, ask user for confirmation to proceed with local deletion only
-                    const proceedLocal = confirm(
-                        'Database deletion failed: ' + apiError.message + '\n\n' +
-                        'Would you like to proceed with local deletion only?\n\n' +
-                        'Note: Your data will be removed from this device, but may remain in the database.'
-                    );
-                    
-                    if (proceedLocal) {
-                        this.deleteAccountLocally();
-                        return;
-                    } else {
-                        this.handleDeleteError('Account deletion cancelled.');
-                        return;
-                    }
-                }
-            } else {
-                // No token available, proceed with local deletion only
-                console.log('No auth token available, proceeding with local deletion only');
-                this.deleteAccountLocally();
-            }
-            
-        } catch (error) {
-            console.error('Error deleting account:', error);
-            this.handleDeleteError(error.message);
-        }
-    }
-
-    // Delete user's bookings from database
-    async deleteUserBookings(token, userEmail) {
-        try {
-            const response = await fetch('http://localhost:5002/api/bookings/user', {
+            const response = await fetch('http://localhost:5003/api/auth/delete-account', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    email: userEmail
-                })
+                }
             });
 
-            if (response.ok) {
-                console.log('User bookings deleted from database');
-            } else {
-                console.warn('Failed to delete user bookings from database, but continuing with account deletion');
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to delete account.');
             }
-        } catch (error) {
-            console.warn('Error deleting user bookings from database:', error);
-            // Don't throw error here, continue with account deletion
-        }
-    }
 
-    // Delete account locally (fallback method)
-    deleteAccountLocally() {
-        try {
-            // Clear all user data from localStorage
-            const keysToRemove = [
-                'currentUser',
-                'authToken',
-                'userBookings',
-                'userPreferences',
-                'bookingHistory',
-                'userProfile'
-            ];
-
-            keysToRemove.forEach(key => {
-                localStorage.removeItem(key);
-            });
-
-            // Clear session storage as well
+            // Wipe local storage and redirect
+            ['currentUser', 'authToken', 'userBookings', 'userPreferences',
+             'bookingHistory', 'userProfile'].forEach(k => localStorage.removeItem(k));
             sessionStorage.clear();
 
-            // Show success message
-            this.handleSuccessfulDeletion();
-            
+            if (window.showToast) showToast('Account deleted successfully. Goodbye!', 'success');
+            else alert('✅ Account deleted successfully. You have been logged out.');
+            setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+
         } catch (error) {
-            console.error('Error deleting account locally:', error);
-            this.handleDeleteError();
+            console.error('Delete account error:', error);
+            deleteBtn.innerHTML = originalHTML;
+            deleteBtn.disabled = false;
+            if (window.showToast) showToast(error.message || 'Failed to delete account. Please try again.', 'error');
+            else alert('❌ ' + (error.message || 'Failed to delete account. Please try again.'));
         }
-    }
-
-    // Handle successful account deletion
-    handleSuccessfulDeletion() {
-        // Show success message
-        alert('✅ Account deleted successfully!\n\nYour account and all associated data have been permanently removed from our database. You have been logged out.');
-        
-        // Clear any remaining data and redirect
-        this.logout();
-    }
-
-    // Handle delete error
-    handleDeleteError(errorMessage = null) {
-        const deleteBtn = document.getElementById('delete-account-btn');
-        
-        // Reset button state
-        deleteBtn.innerHTML = '<i class="ri-delete-bin-line"></i> Delete Account';
-        deleteBtn.disabled = false;
-        
-        const message = errorMessage || '❌ Failed to delete account. Please try again or contact support.';
-        alert(message);
     }
 
     // Refresh user data
@@ -322,7 +218,7 @@ class ProfileManager {
         try {
             const token = localStorage.getItem('authToken');
             
-            const response = await fetch('http://localhost:5002/api/auth/profile', {
+            const response = await fetch('http://localhost:5003/api/auth/profile', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

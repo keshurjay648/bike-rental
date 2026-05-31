@@ -1,7 +1,7 @@
 const signupForm = document.getElementById("signupForm");
 const signupMessage = document.getElementById("signupMessage");
 
-const API_BASE_URL = 'http://localhost:5002/api';
+const API_BASE_URL = 'http://localhost:5003/api';
 
 function setSignupMessage(message, isError = false) {
   signupMessage.innerText = message;

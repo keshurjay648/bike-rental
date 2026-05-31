@@ -1,7 +1,7 @@
 const resetPasswordForm = document.getElementById("resetPasswordForm");
 const message = document.getElementById("message");
 
-const API_BASE_URL = 'http://localhost:5002/api';
+const API_BASE_URL = 'http://localhost:5003/api';
 
 function setMessage(msg, isError = false) {
   message.innerText = msg;
@@ -84,4 +84,19 @@ resetPasswordForm.addEventListener("submit", async (event) => {
   } catch (error) {
     setMessage(error.message || "Password reset failed. Please try again.", true);
   }
+});
+
+// Password visibility toggles
+document.addEventListener('DOMContentLoaded', () => {
+  [['newPasswordToggle', 'newPassword'], ['confirmPasswordToggle', 'confirmPassword']].forEach(([btnId, inputId]) => {
+    const btn = document.getElementById(btnId);
+    const input = document.getElementById(inputId);
+    if (btn && input) {
+      btn.addEventListener('click', () => {
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.querySelector('i').className = isPassword ? 'ri-eye-off-line' : 'ri-eye-line';
+      });
+    }
+  });
 });

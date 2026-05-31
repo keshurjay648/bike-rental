@@ -1,7 +1,7 @@
 const forgotPasswordForm = document.getElementById("forgotPasswordForm");
 const message = document.getElementById("message");
 
-const API_BASE_URL = 'http://localhost:5002/api';
+const API_BASE_URL = 'http://localhost:5003/api';
 
 function setMessage(msg, isError = false) {
   message.innerText = msg;

@@ -5,7 +5,8 @@ import {
   verifyOTP,
   resendOTP,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  deleteAccount
 } from '../controllers/auth.controller.js';
 import { authenticateToken } from '../middleware/auth.js';
 
@@ -28,6 +29,9 @@ router.post('/forgot-password', forgotPassword);
 
 // Reset password
 router.post('/reset-password', resetPassword);
+
+// Delete account (protected — requires valid JWT)
+router.delete('/delete-account', authenticateToken, deleteAccount);
 
 // Protected route example - get current user info
 router.get('/me', authenticateToken, (req, res) => {

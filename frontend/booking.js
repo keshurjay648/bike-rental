@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5002/api";
+const API_BASE_URL = "http://localhost:5003/api";
 
 const params = new URLSearchParams(window.location.search);
 const bike = params.get("bike");
@@ -365,8 +365,10 @@ async function confirmBooking() {
       }
 
       localStorage.setItem("booking", JSON.stringify(payload.data));
+      localStorage.setItem("currentBooking", JSON.stringify(payload.data));
+      if (window.showToast) showToast('Booking confirmed! Redirecting…', 'success');
       setMessage("Booking created. Redirecting to payment...");
-      window.location.href = "payment.html";
+      setTimeout(() => { window.location.href = "payment.html"; }, 800);
     } catch (apiError) {
       // Fallback to local storage booking
       createLocalBooking(customerName, customerEmail, pickup, drop, total);
@@ -399,8 +401,9 @@ function createLocalBooking(customerName, customerEmail, pickup, drop, total) {
   localStorage.setItem('userBookings', JSON.stringify(existingBookings));
   localStorage.setItem("currentBooking", JSON.stringify(bookingData));
 
+  if (window.showToast) showToast('Booking confirmed! Redirecting…', 'success');
   setMessage("Booking created. Redirecting to payment...");
-  window.location.href = "payment.html";
+  setTimeout(() => { window.location.href = "payment.html"; }, 800);
 }
 
 window.confirmBooking = confirmBooking;

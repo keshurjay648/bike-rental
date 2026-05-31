@@ -89,7 +89,7 @@
           </div>
 
           <!-- Firebase Phone Verification Section -->
-          <div class="auth-form">
+          <div class="auth-form" id="firebase-phone-auth">
             <div class="form-group">
               <label for="phoneNumber">
                 <i class="ri-phone-line"></i>
@@ -102,6 +102,9 @@
               <span>Send OTP</span>
               <i class="ri-send-plane-line"></i>
             </button>
+
+            <!-- Visible message for the send-OTP step -->
+            <p id="sendOtpMessage" class="auth-message" style="margin-top:0.6rem;"></p>
 
             <div id="recaptcha-container"></div>
           </div>
@@ -117,6 +120,7 @@
                 id="firebaseOtp"
                 placeholder="Enter 6-digit OTP"
                 maxlength="6"
+                inputmode="numeric"
               />
             </div>
 
@@ -135,7 +139,8 @@
               </button>
             </div>
 
-            <p id="firebaseMessage" class="auth-message"></p>
+            <!-- Message for the verify step -->
+            <p id="firebaseMessage" class="auth-message" style="margin-top:0.6rem;"></p>
           </div>
 
           <!-- Fallback Phone Verification Section -->
@@ -191,183 +196,185 @@
       document.addEventListener("DOMContentLoaded", function () {
         console.log("🚀 OTP System Starting...");
 
-        // Initialize Firebase
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-          console.log("✅ Firebase initialized");
-        }
         const auth = firebase.auth();
 
         // Get DOM elements
         const phoneInput = document.getElementById("phoneNumber");
         const sendBtn = document.getElementById("sendFirebaseOtp");
-        const messageEl = document.getElementById("firebaseMessage");
+        const sendMessageEl = document.getElementById("sendOtpMessage");
         const otpSection = document.getElementById("otp-verification");
         const otpInput = document.getElementById("firebaseOtp");
         const verifyBtn = document.getElementById("verifyFirebaseOtp");
         const resendBtn = document.getElementById("resendFirebaseOtp");
+        const verifyMessageEl = document.getElementById("firebaseMessage");
         const continueBtn = document.getElementById("continueBtn");
-
-        console.log("📱 Elements found:", {
-          phoneInput: !!phoneInput,
-          sendBtn: !!sendBtn,
-          messageEl: !!messageEl,
-          otpSection: !!otpSection,
-          otpInput: !!otpInput,
-          verifyBtn: !!verifyBtn,
-          resendBtn: !!resendBtn,
-          continueBtn: !!continueBtn,
-        });
 
         let confirmationResult = null;
 
-        // Initialize reCAPTCHA
-        try {
-          window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-            "recaptcha-container",
-            {
-              size: "invisible",
-              callback: function (response) {
-                console.log("✅ reCAPTCHA solved");
-              },
-            },
-          );
-          console.log("✅ reCAPTCHA initialized");
-        } catch (error) {
-          console.error("❌ reCAPTCHA error:", error);
+        function showSendMsg(text, isError) {
+          sendMessageEl.textContent = text;
+          sendMessageEl.style.color = isError ? "#d93025" : (isError === false ? "#188038" : "#666");
         }
 
-        // Send OTP button
+        function showVerifyMsg(text, isError) {
+          verifyMessageEl.textContent = text;
+          verifyMessageEl.style.color = isError ? "#d93025" : (isError === false ? "#188038" : "#666");
+        }
+
+        // Initialize reCAPTCHA
+        function initRecaptcha() {
+          try {
+            if (window.recaptchaVerifier) {
+              window.recaptchaVerifier.clear();
+            }
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+              "recaptcha-container",
+              {
+                size: "invisible",
+                callback: function () {
+                  console.log("✅ reCAPTCHA solved");
+                },
+                "expired-callback": function () {
+                  console.log("⚠️ reCAPTCHA expired, reinitializing...");
+                  initRecaptcha();
+                }
+              }
+            );
+            console.log("✅ reCAPTCHA initialized");
+          } catch (error) {
+            console.error("❌ reCAPTCHA init error:", error);
+          }
+        }
+
+        initRecaptcha();
+
+        // Send OTP
         if (sendBtn) {
           sendBtn.addEventListener("click", async function (e) {
             e.preventDefault();
             console.log("🔥 Send OTP clicked!");
 
             const phoneNumber = phoneInput.value.trim();
-            console.log("📱 Phone number:", phoneNumber);
 
             if (!phoneNumber) {
-              messageEl.textContent = "Please enter phone number";
-              messageEl.style.color = "#d93025";
+              showSendMsg("Please enter your phone number.", true);
               return;
             }
 
             if (!/^\+91\d{10}$/.test(phoneNumber)) {
-              messageEl.textContent =
-                "Please enter valid Indian phone number (+91XXXXXXXXXX)";
-              messageEl.style.color = "#d93025";
+              showSendMsg("Enter a valid Indian number: +91XXXXXXXXXX", true);
               return;
             }
 
+            sendBtn.disabled = true;
+            showSendMsg("Sending OTP…", null);
+
             try {
-              messageEl.textContent = "Sending OTP...";
-              messageEl.style.color = "#666";
+              // Re-init reCAPTCHA if needed
+              if (!window.recaptchaVerifier) initRecaptcha();
 
               confirmationResult = await auth.signInWithPhoneNumber(
                 phoneNumber,
-                window.recaptchaVerifier,
+                window.recaptchaVerifier
               );
 
-              messageEl.textContent = "OTP sent successfully!";
-              messageEl.style.color = "#188038";
+              showSendMsg("OTP sent! Check your messages.", false);
               console.log("✅ OTP sent to:", phoneNumber);
 
-              // Show OTP verification section
+              // Show OTP section
               otpSection.classList.remove("hidden");
               otpSection.style.display = "block";
+              sendBtn.textContent = "Resend OTP";
+              sendBtn.disabled = false;
+
             } catch (error) {
               console.error("❌ Send OTP error:", error);
-              messageEl.textContent = "Failed to send OTP: " + error.message;
-              messageEl.style.color = "#d93025";
+              sendBtn.disabled = false;
+
+              // Reset reCAPTCHA on error so user can retry
+              initRecaptcha();
+
+              let msg = "Failed to send OTP.";
+              if (error.code === "auth/invalid-phone-number")   msg = "Invalid phone number format.";
+              else if (error.code === "auth/too-many-requests") msg = "Too many attempts. Try again later.";
+              else if (error.code === "auth/quota-exceeded")    msg = "SMS quota exceeded. Try later.";
+              else if (error.message)                           msg = error.message;
+
+              showSendMsg(msg, true);
             }
           });
         }
 
-        // Verify OTP button
-        if (verifyBtn && otpInput) {
+        // Verify OTP
+        if (verifyBtn) {
           verifyBtn.addEventListener("click", async function (e) {
             e.preventDefault();
             console.log("🔥 Verify OTP clicked!");
 
             const otp = otpInput.value.trim();
-            console.log("🔐 OTP entered:", otp);
 
-            if (!otp) {
-              messageEl.textContent = "Please enter OTP";
-              messageEl.style.color = "#d93025";
+            if (!otp || !/^\d{6}$/.test(otp)) {
+              showVerifyMsg("Enter the 6-digit OTP.", true);
               return;
             }
 
-            if (!/^\d{6}$/.test(otp)) {
-              messageEl.textContent = "OTP must be 6 digits";
-              messageEl.style.color = "#d93025";
+            if (!confirmationResult) {
+              showVerifyMsg("Please send OTP first.", true);
               return;
             }
+
+            verifyBtn.disabled = true;
+            showVerifyMsg("Verifying…", null);
 
             try {
-              messageEl.textContent = "Verifying OTP...";
-              messageEl.style.color = "#666";
-
               const result = await confirmationResult.confirm(otp);
-
-              messageEl.textContent = "Phone verified successfully!";
-              messageEl.style.color = "#188038";
-              console.log("✅ Phone verified!");
-
-              // Store user and show continue button
               const user = result.user;
-              localStorage.setItem(
-                "currentUser",
-                JSON.stringify({
-                  uid: user.uid,
-                  phoneNumber: user.phoneNumber,
-                  phoneVerified: true,
-                }),
-              );
 
-              if (continueBtn) {
-                continueBtn.style.display = "inline-block";
-              }
+              showVerifyMsg("Phone verified successfully! ✅", false);
+              console.log("✅ Phone verified:", user.phoneNumber);
+
+              // Merge with existing user data
+              const existing = JSON.parse(localStorage.getItem("currentUser") || "{}");
+              localStorage.setItem("currentUser", JSON.stringify({
+                ...existing,
+                uid: user.uid,
+                phoneNumber: user.phoneNumber,
+                phoneVerified: true,
+              }));
+
               otpSection.classList.add("hidden");
               otpSection.style.display = "none";
+
+              if (continueBtn) continueBtn.style.display = "inline-block";
+
             } catch (error) {
               console.error("❌ Verify OTP error:", error);
-              messageEl.textContent = "Invalid OTP: " + error.message;
-              messageEl.style.color = "#d93025";
+              verifyBtn.disabled = false;
+
+              let msg = "Verification failed.";
+              if (error.code === "auth/invalid-verification-code") msg = "Wrong OTP. Please try again.";
+              else if (error.code === "auth/code-expired")         msg = "OTP expired. Please resend.";
+              else if (error.message)                              msg = error.message;
+
+              showVerifyMsg(msg, true);
             }
           });
         }
 
-        // Resend OTP button
+        // Resend OTP — just re-click send
         if (resendBtn) {
-          resendBtn.addEventListener("click", async function (e) {
+          resendBtn.addEventListener("click", function (e) {
             e.preventDefault();
-            console.log("🔥 Resend OTP clicked!");
-
-            try {
-              messageEl.textContent = "Resending OTP...";
-              messageEl.style.color = "#666";
-
-              // Go back to phone input
-              otpSection.classList.add("hidden");
-              otpSection.style.display = "none";
-              otpInput.value = "";
-
-              // Trigger send OTP again
-              sendBtn.click();
-            } catch (error) {
-              console.error("❌ Resend OTP error:", error);
-              messageEl.textContent = "Failed to resend OTP: " + error.message;
-              messageEl.style.color = "#d93025";
-            }
+            otpInput.value = "";
+            otpSection.classList.add("hidden");
+            otpSection.style.display = "none";
+            sendBtn.click();
           });
         }
 
         // Continue button
         if (continueBtn) {
-          continueBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            console.log("🔥 Continue clicked!");
+          continueBtn.addEventListener("click", function () {
             window.location.href = "index.html";
           });
         }

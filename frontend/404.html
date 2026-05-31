@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found | Torque Rentals</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    .notfound-page {
+      min-height: 100vh;
+      background: var(--container-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .notfound-inner { max-width: 480px; }
+    .notfound-code {
+      font-family: "Racing Sans One", sans-serif;
+      font-size: 8rem;
+      line-height: 1;
+      color: var(--main-color);
+      opacity: 0.15;
+      user-select: none;
+    }
+    .notfound-icon {
+      font-size: 4rem;
+      color: var(--main-color);
+      margin: -1rem 0 1rem;
+      display: block;
+    }
+    .notfound-inner h1 { font-size: 1.8rem; margin-bottom: 0.6rem; }
+    .notfound-inner p  { color: var(--text-alter-color); margin-bottom: 2rem; line-height: 1.6; }
+    .notfound-btns { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+    .btn-home, .btn-bikes {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 12px 24px; border-radius: 8px;
+      font-size: 0.95rem; font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-home  { background: var(--main-color); color: #fff; }
+    .btn-home:hover  { background: var(--second-color); transform: translateY(-2px); }
+    .btn-bikes { background: var(--text-color); color: #fff; }
+    .btn-bikes:hover { background: #333; transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav container">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" width="80" height="40" alt="Torque Rentals" />
+      </a>
+    </div>
+  </header>
+
+  <main class="notfound-page">
+    <div class="notfound-inner">
+      <div class="notfound-code">404</div>
+      <i class="ri-road-map-line notfound-icon"></i>
+      <h1>Looks like you took a wrong turn</h1>
+      <p>The page you're looking for doesn't exist or has been moved. Let's get you back on the road.</p>
+      <div class="notfound-btns">
+        <a href="index.html" class="btn-home"><i class="ri-home-line"></i> Go Home</a>
+        <a href="index.html#bikes" class="btn-bikes"><i class="ri-motorbike-line"></i> Browse Bikes</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

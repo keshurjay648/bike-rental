@@ -466,3 +466,58 @@ export async function resetPassword(req, res) {
     });
   }
 }
+
+// Delete account
+export async function deleteAccount(req, res) {
+  try {
+    // userId comes from the DB row set by authenticateToken middleware
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized. Please log in again.'
+      });
+    }
+
+    // Confirm the user actually exists
+    const userResult = await pool.query(
+      'SELECT id, email FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.'
+      });
+    }
+
+    // Delete in dependency order so foreign keys don't block the user delete.
+    // Adjust table names if yours differ.
+    await pool.query('DELETE FROM otp_codes            WHERE user_id = $1', [userId]);
+    await pool.query('DELETE FROM password_reset_tokens WHERE user_id = $1', [userId]);
+
+    // Delete bookings if the table exists
+    try {
+      await pool.query('DELETE FROM bookings WHERE user_id = $1', [userId]);
+    } catch (_) {
+      // table may not exist yet — safe to ignore
+    }
+
+    // Finally delete the user
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+
+    return res.json({
+      success: true,
+      message: 'Account and all associated data deleted successfully.'
+    });
+
+  } catch (error) {
+    console.error('Delete account error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error while deleting account.'
+    });
+  }
+}

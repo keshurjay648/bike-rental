@@ -98,3 +98,69 @@ export async function getBookings(req, res) {
     data: result.rows
   });
 }
+
+// Get bookings for the currently authenticated user
+export async function getMyBookings(req, res) {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+
+  // Match by customer_email since bookings table uses email not user_id FK yet
+  const result = await pool.query(
+    `SELECT b.id, b.bike_id, k.name AS bike_name, k.image_url AS bike_image,
+            k.type AS bike_type,
+            b.customer_name, b.customer_email,
+            b.start_date, b.end_date, b.total_hours, b.total_amount,
+            b.booking_status AS status, b.payment_status, b.created_at
+     FROM bookings b
+     JOIN bikes k ON k.id = b.bike_id
+     WHERE b.customer_email = $1
+     ORDER BY b.created_at DESC`,
+    [req.user.email]
+  );
+
+  res.json({ success: true, data: result.rows });
+}
+
+// Cancel a booking
+export async function cancelBooking(req, res) {
+  const { id } = req.params;
+  const userId = req.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+
+  // Verify the booking belongs to this user
+  const bookingResult = await pool.query(
+    `SELECT id, booking_status, customer_email FROM bookings WHERE id = $1`,
+    [id]
+  );
+
+  if (bookingResult.rowCount === 0) {
+    return res.status(404).json({ success: false, message: "Booking not found" });
+  }
+
+  const booking = bookingResult.rows[0];
+
+  if (booking.customer_email !== req.user.email) {
+    return res.status(403).json({ success: false, message: "Not your booking" });
+  }
+
+  if (booking.booking_status === "cancelled") {
+    return res.status(400).json({ success: false, message: "Booking already cancelled" });
+  }
+
+  if (booking.booking_status === "completed") {
+    return res.status(400).json({ success: false, message: "Cannot cancel a completed booking" });
+  }
+
+  await pool.query(
+    `UPDATE bookings SET booking_status = 'cancelled' WHERE id = $1`,
+    [id]
+  );
+
+  res.json({ success: true, message: "Booking cancelled successfully" });
+}

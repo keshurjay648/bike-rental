@@ -1,7 +1,7 @@
 {
-  "name": "bike-rental-frontend",
+  "name": "torque-rentals-frontend",
   "version": "1.0.0",
-  "description": "Bike Rental Application Frontend",
+  "description": "Torque Rentals — Bike & Scooter Rental Web App",
   "main": "index.html",
   "scripts": {
     "dev": "npx serve .",
@@ -11,7 +11,7 @@
   "devDependencies": {
     "serve": "^14.2.1"
   },
-  "keywords": ["bike", "rental", "frontend"],
-  "author": "Bike Rental Team",
-  "license": "MIT"
+  "keywords": ["bike", "rental", "scooter", "torque-rentals"],
+  "author": "Jay Keshur <keshurjay648@gmail.com>",
+  "license": "UNLICENSED"
 }

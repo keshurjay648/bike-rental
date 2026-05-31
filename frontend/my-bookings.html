@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Bookings | Torque Rentals</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="auth-ui.css" />
+  <link rel="stylesheet" href="my-bookings.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="nav container">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" width="80" height="40" alt="Torque Rentals" />
+      </a>
+      <div class="navbar">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="index.html#bikes" class="nav-link">Bikes</a>
+        <a href="index.html#destination" class="nav-link">Destination</a>
+        <a href="index.html#reviews" class="nav-link">Reviews</a>
+      </div>
+      <a href="signup.html" class="sign-up" id="signup-btn">Sign Up</a>
+      <div class="user-profile hidden" id="user-profile">
+        <div class="profile-dropdown">
+          <button class="profile-btn" id="profile-btn">
+            <i class="ri-user-line"></i>
+            <span id="user-name">User</span>
+            <i class="ri-arrow-down-s-line"></i>
+          </button>
+          <div class="profile-menu" id="profile-menu">
+            <a href="profile.html" class="profile-menu-item"><i class="ri-user-line"></i> My Profile</a>
+            <a href="my-bookings.html" class="profile-menu-item"><i class="ri-calendar-check-line"></i> My Bookings</a>
+            <a href="#" class="profile-menu-item" id="logout-btn"><i class="ri-logout-box-line"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+      <div class="menu-icon">
+        <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="bookings-page">
+    <div class="container bookings-wrap">
+      <div class="bookings-header">
+        <div class="bookings-title-row">
+          <div>
+            <span class="bookings-label">Your Rides</span>
+            <h1>My Bookings</h1>
+          </div>
+          <a href="index.html#bikes" class="new-booking-btn">
+            <i class="ri-add-line"></i> Book a Bike
+          </a>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="booking-tabs">
+          <button class="tab-btn active" data-status="all">All</button>
+          <button class="tab-btn" data-status="confirmed">Confirmed</button>
+          <button class="tab-btn" data-status="completed">Completed</button>
+          <button class="tab-btn" data-status="cancelled">Cancelled</button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div class="bookings-loading" id="bookingsLoading">
+        <div class="loading-spinner"></div>
+        <p>Loading your bookings…</p>
+      </div>
+
+      <!-- Empty state -->
+      <div class="bookings-empty hidden" id="bookingsEmpty">
+        <i class="ri-motorbike-line"></i>
+        <h3>No bookings yet</h3>
+        <p>You haven't booked any bikes yet. Start your first ride today!</p>
+        <a href="index.html#bikes" class="new-booking-btn">Browse Bikes</a>
+      </div>
+
+      <!-- Bookings grid -->
+      <div class="bookings-grid hidden" id="bookingsGrid"></div>
+    </div>
+  </main>
+
+  <!-- Cancel confirmation modal -->
+  <div class="modal-overlay hidden" id="cancelModal">
+    <div class="modal-card">
+      <div class="modal-icon"><i class="ri-error-warning-line"></i></div>
+      <h3>Cancel Booking?</h3>
+      <p>This will cancel your booking. This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="modal-btn-secondary" id="cancelModalNo">Keep Booking</button>
+        <button class="modal-btn-danger" id="cancelModalYes">Yes, Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="img/logo.png" alt="Torque Rentals" height="36" />
+        <p>Ride free. Ride smart.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#bikes">Bikes</a>
+        <a href="dealers.html">Dealers</a>
+        <a href="profile.html">Profile</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Torque Rentals. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="toast.js"></script>
+  <script src="my-bookings.js"></script>
+  <script src="auth-ui.js"></script>
+</body>
+</html>

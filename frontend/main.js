@@ -159,10 +159,70 @@ const createReviewCard = (review) => `
 </article>`;
 
 const bikesContainer = document.querySelector(".bikes-content");
-if (bikesContainer) {
-  bikeData.forEach((bike) => {
+const noResults = document.getElementById("no-results");
+
+// --- search & filter state ---
+let activeType = "All";
+let maxPrice = 250;
+let searchQuery = "";
+
+function renderBikes() {
+  if (!bikesContainer) return;
+
+  const filtered = bikeData.filter((bike) => {
+    const matchType = activeType === "All" || bike.type === activeType;
+    const matchPrice = parseInt(bike.price) <= maxPrice;
+    const q = searchQuery.toLowerCase();
+    const matchSearch =
+      !q ||
+      bike.name.toLowerCase().includes(q) ||
+      bike.type.toLowerCase().includes(q);
+    return matchType && matchPrice && matchSearch;
+  });
+
+  bikesContainer.innerHTML = "";
+  filtered.forEach((bike) => {
     bikesContainer.insertAdjacentHTML("beforeend", createBikeBox(bike));
   });
+
+  if (noResults) {
+    noResults.classList.toggle("hidden", filtered.length > 0);
+  }
+}
+
+if (bikesContainer) {
+  renderBikes();
+
+  // search input
+  const searchInput = document.getElementById("bike-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim();
+      renderBikes();
+    });
+  }
+
+  // type filter buttons
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeType = btn.dataset.type;
+      renderBikes();
+    });
+  });
+
+  // price range slider
+  const priceRange = document.getElementById("price-range");
+  const priceLabel = document.getElementById("price-label");
+  if (priceRange) {
+    priceRange.addEventListener("input", () => {
+      maxPrice = parseInt(priceRange.value);
+      if (priceLabel) priceLabel.textContent = `₹${maxPrice}/hr`;
+      renderBikes();
+    });
+  }
 }
 
 const destinationContainer = document.querySelector(".destination-content");
@@ -184,4 +244,86 @@ if (menu) {
   menu.onclick = () => {
     menu.classList.toggle("move");
   };
+}
+
+// ── Bike Quick-View Modal ─────────────────────────────────────────────────
+const bikeModal      = document.getElementById('bikeModal');
+const bikeModalClose = document.getElementById('bikeModalClose');
+
+function openBikeModal(bike) {
+  if (!bikeModal) return;
+  document.getElementById('modalBikeImg').src       = bike.image;
+  document.getElementById('modalBikeImg').alt       = bike.name;
+  document.getElementById('modalBikeTag').textContent  = bike.tag;
+  document.getElementById('modalBikeName').textContent = bike.name;
+  document.getElementById('modalBikeType').textContent = bike.type;
+  document.getElementById('modalBikeCc').textContent   = bike.cc;
+  document.getElementById('modalBikeTorque').textContent = bike.torque;
+  document.getElementById('modalBikeHp').textContent   = bike.horsepower;
+  document.getElementById('modalBikePrice').textContent = bike.price;
+  document.getElementById('modalBookBtn').href =
+    `booking.html?bike=${encodeURIComponent(bike.name)}&price=${bike.price}` +
+    `&img=${encodeURIComponent(bike.image)}&cc=${encodeURIComponent(bike.cc)}` +
+    `&torque=${encodeURIComponent(bike.torque)}&horsepower=${encodeURIComponent(bike.horsepower)}`;
+  bikeModal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBikeModal() {
+  if (!bikeModal) return;
+  bikeModal.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+if (bikeModalClose) bikeModalClose.addEventListener('click', closeBikeModal);
+if (bikeModal) {
+  bikeModal.addEventListener('click', (e) => { if (e.target === bikeModal) closeBikeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBikeModal(); });
+}
+
+// Attach "quick view" on bike image click — re-run after each renderBikes
+function attachModalTriggers() {
+  if (!bikesContainer) return;
+  bikesContainer.querySelectorAll('.bike-img').forEach((img, i) => {
+    const filtered = bikeData.filter((bike) => {
+      const matchType   = activeType === "All" || bike.type === activeType;
+      const matchPrice  = parseInt(bike.price) <= maxPrice;
+      const q           = searchQuery.toLowerCase();
+      const matchSearch = !q || bike.name.toLowerCase().includes(q) || bike.type.toLowerCase().includes(q);
+      return matchType && matchPrice && matchSearch;
+    });
+    if (filtered[i]) {
+      img.style.cursor = 'pointer';
+      img.title = 'Quick view';
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openBikeModal(filtered[i]);
+      });
+    }
+  });
+}
+
+// Patch renderBikes to also attach triggers
+const _origRender = renderBikes;
+// eslint-disable-next-line no-global-assign
+window._renderBikes = function () {
+  _origRender();
+  attachModalTriggers();
+};
+// Run once on load
+if (bikesContainer) attachModalTriggers();
+
+// ── Scroll-to-top button ──────────────────────────────────────────────────
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+if (scrollTopBtn) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      scrollTopBtn.classList.remove('hidden');
+    } else {
+      scrollTopBtn.classList.add('hidden');
+    }
+  });
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }

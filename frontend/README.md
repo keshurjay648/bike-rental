@@ -1,67 +1,43 @@
-# Bike Rental Frontend
+# Torque Rentals — Frontend
 
-## Development Setup
+A bike and scooter rental web app built from scratch.
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (comes with Node.js)
+## Pages
 
-### Installation
+| File | Description |
+|---|---|
+| `index.html` | Home page — bike listing, search & filter, quick-view modal |
+| `booking.html` | Booking page — date/time picker, price calculator |
+| `payment.html` | Razorpay payment checkout |
+| `booking-success.html` | Booking confirmation with printable receipt |
+| `my-bookings.html` | Booking history with cancel and rebook |
+| `login.html` | Login |
+| `signup.html` | Sign up |
+| `verify-otp.html` | Firebase phone OTP verification |
+| `forgot-password.html` | Request password reset |
+| `reset-password.html` | Set new password |
+| `profile.html` | User profile and account management |
+| `dealers.html` | Mumbai dealer locations |
+| `helmet-booking.html` | Helmet rental |
+| `404.html` | Not found page |
 
-1. Install dependencies:
+## Shared Scripts
+
+| File | Description |
+|---|---|
+| `main.js` | Bike data, search/filter, bike modal, scroll-to-top |
+| `auth-ui.js` | Nav auth state (show/hide login button vs profile dropdown) |
+| `toast.js` | Global toast notification system |
+
+## Running Locally
+
+Serve the folder with any static server, e.g.:
+
 ```bash
-npm install
+cd frontend
+npx serve .
 ```
 
-2. Start development server:
-```bash
-npm run dev
-```
+Then open `http://localhost:3000`.
 
-3. Open browser and navigate to:
-```
-http://localhost:3000
-```
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run start` - Start server on port 3000
-- `npm run build` - Build for production
-
-### Project Structure
-
-```
-frontend/
-├── index.html          # Main HTML file
-├── style.css           # Main stylesheet
-├── auth.css            # Authentication styles
-├── booking.css         # Booking page styles
-├── payment.css          # Payment page styles
-├── auth-ui.css          # Authentication UI components
-├── login.html           # Login page
-├── signup.html          # Signup page
-├── verify-otp.html      # OTP verification page
-├── booking.html         # Booking page
-├── payment.html          # Payment page
-├── login.js             # Login functionality
-├── firebase-auth.js     # Firebase authentication
-├── img/                 # Images folder
-└── package.json         # NPM configuration
-```
-
-### Features
-
-- ✅ Responsive design for all devices
-- ✅ Clean, modern UI
-- ✅ Firebase authentication
-- ✅ Bike rental booking system
-- ✅ Payment integration
-- ✅ OTP verification
-
-### Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+Make sure the backend is running on port 5003 before testing booking and payment.
