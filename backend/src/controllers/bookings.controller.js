@@ -124,7 +124,7 @@ export async function getMyBookings(req, res) {
   res.json({ success: true, data: result.rows });
 }
 
-// Cancel a booking
+// Cancel a booking (owner or admin)
 export async function cancelBooking(req, res) {
   const { id } = req.params;
   const userId = req.user?.id;
@@ -133,7 +133,6 @@ export async function cancelBooking(req, res) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 
-  // Verify the booking belongs to this user
   const bookingResult = await pool.query(
     `SELECT id, booking_status, customer_email FROM bookings WHERE id = $1`,
     [id]
@@ -144,8 +143,10 @@ export async function cancelBooking(req, res) {
   }
 
   const booking = bookingResult.rows[0];
+  const isAdmin = Boolean(req.user.is_admin);
+  const isOwner = booking.customer_email === req.user.email;
 
-  if (booking.customer_email !== req.user.email) {
+  if (!isAdmin && !isOwner) {
     return res.status(403).json({ success: false, message: "Not your booking" });
   }
 
@@ -153,7 +154,7 @@ export async function cancelBooking(req, res) {
     return res.status(400).json({ success: false, message: "Booking already cancelled" });
   }
 
-  if (booking.booking_status === "completed") {
+  if (booking.booking_status === "completed" && !isAdmin) {
     return res.status(400).json({ success: false, message: "Cannot cancel a completed booking" });
   }
 
@@ -162,5 +163,31 @@ export async function cancelBooking(req, res) {
     [id]
   );
 
-  res.json({ success: true, message: "Booking cancelled successfully" });
+  res.json({
+    success: true,
+    message: "Booking cancelled successfully",
+    data: { id: Number(id), booking_status: "cancelled" }
+  });
+}
+
+/** Admin: permanently delete a booking (and related payments via CASCADE) */
+export async function deleteBooking(req, res) {
+  const { id } = req.params;
+
+  const bookingResult = await pool.query(
+    `SELECT id, bike_id, customer_email, booking_status FROM bookings WHERE id = $1`,
+    [id]
+  );
+
+  if (bookingResult.rowCount === 0) {
+    return res.status(404).json({ success: false, message: "Booking not found" });
+  }
+
+  await pool.query(`DELETE FROM bookings WHERE id = $1`, [id]);
+
+  res.json({
+    success: true,
+    message: `Booking #${id} deleted`,
+    data: { id: Number(id) }
+  });
 }

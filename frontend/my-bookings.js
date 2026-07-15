@@ -1,4 +1,12 @@
 const API_BASE_URL = 'http://localhost:5003/api';
+const API_ORIGIN = 'http://localhost:5003';
+
+function resolveImageUrl(url) {
+  if (!url) return 'img/harly.png';
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  if (url.startsWith('/uploads/')) return `${API_ORIGIN}${url}`;
+  return url;
+}
 
 // ── Auth guard ────────────────────────────────────────────────────────────
 const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -55,7 +63,7 @@ function renderBookings(bookings) {
   filtered.forEach(b => {
     const status   = (b.status || b.booking_status || 'pending').toLowerCase();
     const bikeName = b.bikeName || b.bike_name || 'Bike';
-    const bikeImg  = b.bikeImage || b.bike_image || 'img/harly.png';
+    const bikeImg  = resolveImageUrl(b.bikeImage || b.bike_image || 'img/harly.png');
     const bikeType = b.bikeType || b.bike_type || '';
     const amount   = b.totalPrice || b.total_amount || b.total_price || 0;
     const start    = b.startDate || b.start_date;

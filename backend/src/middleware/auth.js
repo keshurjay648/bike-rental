@@ -1,7 +1,23 @@
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
+import { env } from '../config/env.js';
 
 const jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
+
+function isAdminUser(user) {
+  if (!user) return false;
+  if (user.role === 'admin') return true;
+  const email = (user.email || '').toLowerCase();
+  return env.adminEmails.includes(email);
+}
+
+function mapUserRow(row) {
+  if (!row) return null;
+  return {
+    ...row,
+    is_admin: isAdminUser(row)
+  };
+}
 
 // Authentication middleware
 export async function authenticateToken(req, res, next) {
@@ -21,7 +37,11 @@ export async function authenticateToken(req, res, next) {
     
     // Get user from database
     const userQuery = `
-      SELECT id, name, email, phone, email_verified, phone_verified
+      SELECT id, name, email, phone,
+             COALESCE(email_verified, FALSE) AS email_verified,
+             phone_verified,
+             COALESCE(role, 'user') AS role,
+             created_at
       FROM users WHERE id = $1
     `;
     const userResult = await pool.query(userQuery, [decoded.userId]);
@@ -33,7 +53,7 @@ export async function authenticateToken(req, res, next) {
       });
     }
 
-    req.user = userResult.rows[0];
+    req.user = mapUserRow(userResult.rows[0]);
     next();
 
   } catch (error) {
@@ -73,12 +93,16 @@ export async function optionalAuth(req, res, next) {
     const decoded = jwt.verify(token, jwtSecret);
     
     const userQuery = `
-      SELECT id, name, email, phone, email_verified, phone_verified
+      SELECT id, name, email, phone,
+             COALESCE(email_verified, FALSE) AS email_verified,
+             phone_verified,
+             COALESCE(role, 'user') AS role,
+             created_at
       FROM users WHERE id = $1
     `;
     const userResult = await pool.query(userQuery, [decoded.userId]);
     
-    req.user = userResult.rows[0] || null;
+    req.user = mapUserRow(userResult.rows[0]) || null;
     next();
 
   } catch (error) {
@@ -87,6 +111,27 @@ export async function optionalAuth(req, res, next) {
     next();
   }
 }
+
+/** Require authenticated admin (role=admin or ADMIN_EMAILS allowlist) */
+export function requireAdmin(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication required'
+    });
+  }
+
+  if (!isAdminUser(req.user)) {
+    return res.status(403).json({
+      success: false,
+      message: 'Admin access required'
+    });
+  }
+
+  next();
+}
+
+export { isAdminUser };
 
 // Check if user has verified email
 export function requireEmailVerification(req, res, next) {

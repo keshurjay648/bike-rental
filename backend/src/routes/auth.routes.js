@@ -35,10 +35,20 @@ router.delete('/delete-account', authenticateToken, deleteAccount);
 
 // Protected route example - get current user info
 router.get('/me', authenticateToken, (req, res) => {
+  const user = req.user;
   res.json({
     success: true,
     data: {
-      user: req.user
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        phoneVerified: user.phone_verified,
+        emailVerified: user.email_verified,
+        role: user.role || 'user',
+        isAdmin: Boolean(user.is_admin)
+      }
     }
   });
 });

@@ -4,8 +4,10 @@ import bikesRouter from "./routes/bikes.routes.js";
 import bookingsRouter from "./routes/bookings.routes.js";
 import paymentsRouter from "./routes/payments.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import usersRouter from "./routes/users.routes.js";
 import { env } from "./config/env.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import { uploadsRoot } from "./middleware/upload.js";
 
 const app = express();
 
@@ -38,6 +40,9 @@ app.use(
 );
 app.use(express.json());
 
+// Serve uploaded bike images at http://localhost:PORT/uploads/...
+app.use("/uploads", express.static(uploadsRoot));
+
 app.get("/health", (req, res) => {
   res.json({ success: true, message: "API is running" });
 });
@@ -46,6 +51,7 @@ app.use("/api/bikes", bikesRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/payments", paymentsRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

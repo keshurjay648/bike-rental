@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Torque Rentals</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="auth-ui.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="nav container">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" width="80" height="40" alt="Torque Rentals" />
+      </a>
+      <div class="navbar">
+        <a href="index.html#home" class="nav-link">Home</a>
+        <a href="index.html#bikes" class="nav-link">Bikes</a>
+        <a href="admin.html" class="nav-link">Admin</a>
+      </div>
+      <a href="admin-access.html" class="sign-up" id="signup-btn">Admin Login</a>
+      <div class="user-profile hidden" id="user-profile">
+        <div class="profile-dropdown">
+          <button class="profile-btn" id="profile-btn">
+            <i class="ri-user-line"></i>
+            <span id="user-name">User</span>
+            <i class="ri-arrow-down-s-line"></i>
+          </button>
+          <div class="profile-menu" id="profile-menu">
+            <a href="profile.html" class="profile-menu-item"><i class="ri-user-line"></i> My Profile</a>
+            <a href="my-bookings.html" class="profile-menu-item"><i class="ri-calendar-check-line"></i> My Bookings</a>
+            <a href="admin.html" class="profile-menu-item"><i class="ri-shield-user-line"></i> Admin</a>
+            <a href="#" class="profile-menu-item" id="logout-btn"><i class="ri-logout-box-line"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+      <div class="menu-icon">
+        <div class="line1"></div><div class="line2"></div><div class="line3"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <div class="container admin-wrap">
+      <div class="admin-gate" id="adminGate">
+        <div class="admin-gate-card">
+          <i class="ri-shield-keyhole-line"></i>
+          <h1>Admin access</h1>
+          <p id="adminGateMessage">Checking your permissions…</p>
+          <a href="admin-access.html" class="admin-btn" id="adminLoginLink" style="display:none">
+            Admin sign in
+          </a>
+          <a href="index.html" class="admin-btn outline" id="adminHomeLink" style="display:none">
+            Back to home
+          </a>
+        </div>
+      </div>
+
+      <div class="admin-dashboard hidden" id="adminDashboard">
+        <div class="admin-header">
+          <div>
+            <span class="admin-label">Torque Rentals</span>
+            <h1>Admin Dashboard</h1>
+            <p class="admin-sub">Manage fleet, bookings, and customers</p>
+          </div>
+          <button type="button" class="admin-btn outline" id="refreshAll">
+            <i class="ri-refresh-line"></i> Refresh
+          </button>
+        </div>
+
+        <div class="admin-stats" id="adminStats">
+          <div class="stat-tile">
+            <span class="stat-value" id="statBikes">—</span>
+            <span class="stat-label">Bikes</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="statAvailable">—</span>
+            <span class="stat-label">Available</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="statBooked">—</span>
+            <span class="stat-label">Currently booked</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="statUsers">—</span>
+            <span class="stat-label">Users</span>
+          </div>
+        </div>
+
+        <div class="admin-tabs">
+          <button class="tab-btn active" data-panel="fleet">Fleet</button>
+          <button class="tab-btn" data-panel="bookings">Bookings</button>
+          <button class="tab-btn" data-panel="users">Users</button>
+        </div>
+
+        <!-- Fleet -->
+        <section class="admin-panel" id="panel-fleet">
+          <div class="panel-grid">
+            <form class="admin-form" id="addBikeForm">
+              <h2><i class="ri-add-circle-line"></i> Add bike</h2>
+              <label>
+                Name *
+                <input type="text" name="name" required placeholder="BMW G310" />
+              </label>
+              <label>
+                Brand
+                <input type="text" name="brand" placeholder="BMW" />
+              </label>
+              <label>
+                Type *
+                <select name="type" required>
+                  <option value="Naked">Naked</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Scooter">Scooter</option>
+                </select>
+              </label>
+              <label>
+                Price per hour (₹) *
+                <input type="number" name="pricePerHour" min="1" step="1" required placeholder="180" />
+              </label>
+              <label>
+                Engine CC
+                <input type="text" name="engineCc" placeholder="313 cc" />
+              </label>
+              <label>
+                Torque
+                <input type="text" name="torque" placeholder="28 Nm" />
+              </label>
+              <label>
+                Horsepower
+                <input type="text" name="horsepower" placeholder="34 hp" />
+              </label>
+              <label>
+                Bike image *
+                <input type="file" name="image" id="bikeImageInput" accept="image/jpeg,image/png,image/webp,image/gif" required />
+              </label>
+              <div class="image-preview-wrap hidden" id="bikeImagePreviewWrap">
+                <img id="bikeImagePreview" alt="Preview" />
+                <button type="button" class="admin-btn small outline" id="clearBikeImage">Clear</button>
+              </div>
+              <label>
+                Availability
+                <select name="availabilityStatus">
+                  <option value="available">Available</option>
+                  <option value="unavailable">Unavailable</option>
+                </select>
+              </label>
+              <button type="submit" class="admin-btn">
+                <i class="ri-save-line"></i> Add bike
+              </button>
+            </form>
+
+            <div class="admin-table-wrap">
+              <div class="panel-toolbar">
+                <h2>Fleet status</h2>
+                <div class="fleet-filters">
+                  <button type="button" class="chip active" data-fleet="all">All</button>
+                  <button type="button" class="chip" data-fleet="available">Available</button>
+                  <button type="button" class="chip" data-fleet="booked">Booked</button>
+                  <button type="button" class="chip" data-fleet="unavailable">Unavailable</button>
+                </div>
+              </div>
+              <div class="admin-loading" id="fleetLoading">Loading fleet…</div>
+              <div class="table-scroll">
+                <table class="admin-table" id="fleetTable">
+                  <thead>
+                    <tr>
+                      <th>Bike</th>
+                      <th>Type</th>
+                      <th>Specs</th>
+                      <th>₹/hr</th>
+                      <th>Status</th>
+                      <th>Booking</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="fleetBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bookings -->
+        <section class="admin-panel hidden" id="panel-bookings">
+          <div class="admin-table-wrap full">
+            <div class="panel-toolbar">
+              <h2>All bookings</h2>
+            </div>
+            <div class="admin-loading" id="bookingsLoading">Loading bookings…</div>
+            <div class="table-scroll">
+              <table class="admin-table" id="bookingsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Bike</th>
+                    <th>Customer</th>
+                    <th>Period</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bookingsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Users -->
+        <section class="admin-panel hidden" id="panel-users">
+          <div class="admin-table-wrap full">
+            <div class="panel-toolbar">
+              <h2>Registered users</h2>
+            </div>
+            <div class="admin-loading" id="usersLoading">Loading users…</div>
+            <div class="table-scroll">
+              <table class="admin-table" id="usersTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Verified</th>
+                    <th>Role</th>
+                    <th>Joined</th>
+                  </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="toast.js"></script>
+  <script src="auth-ui.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

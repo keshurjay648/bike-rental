@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Access | Torque Rentals</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body class="admin-login-body">
+  <header>
+    <div class="nav container">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" width="80" height="40" alt="Torque Rentals" />
+      </a>
+      <a href="index.html" class="admin-login-back">
+        <i class="ri-arrow-left-line"></i> Back to site
+      </a>
+    </div>
+  </header>
+
+  <section class="auth-page admin-login-page">
+    <div class="container auth-wrap">
+      <div class="auth-card admin-login-card">
+        <div class="auth-header">
+          <div class="auth-logo admin-login-logo">
+            <i class="ri-shield-keyhole-line"></i>
+          </div>
+          <span class="admin-login-badge">Staff only</span>
+          <h1>Admin Access</h1>
+          <p class="auth-subtitle">Private staff login — use this page only to manage bikes, bookings, and users.</p>
+        </div>
+
+        <form id="adminLoginForm" class="auth-form">
+          <div class="form-group">
+            <label for="adminEmail">
+              <i class="ri-mail-line"></i>
+              Admin email
+            </label>
+            <input type="email" id="adminEmail" placeholder="admin@example.com" autocomplete="username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword">
+              <i class="ri-lock-line"></i>
+              Password
+            </label>
+            <div class="password-input">
+              <input type="password" id="adminPassword" placeholder="Enter your password" autocomplete="current-password" required />
+              <button type="button" class="password-toggle" id="adminPasswordToggle" aria-label="Show password">
+                <i class="ri-eye-line"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-btn admin-login-btn">
+            <span>Sign in to admin</span>
+            <i class="ri-shield-check-line"></i>
+          </button>
+
+          <div id="adminLoginMessage" class="auth-message"></div>
+        </form>
+
+        <p class="admin-login-note">
+          <i class="ri-information-line"></i>
+          This is not the customer login. Bookings use
+          <a href="login.html">login.html</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script src="admin-login.js"></script>
+</body>
+</html>

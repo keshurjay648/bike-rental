@@ -1,4 +1,14 @@
-const bikeData = [
+const API_BASE_URL = 'http://localhost:5003/api';
+const API_ORIGIN = 'http://localhost:5003';
+
+function resolveImageUrl(url) {
+  if (!url) return 'img/harly.png';
+  if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url;
+  if (url.startsWith('/uploads/')) return `${API_ORIGIN}${url}`;
+  return url;
+}
+
+const fallbackBikeData = [
   {
     name: "BMW G310",
     type: "Naked",
@@ -81,6 +91,65 @@ const bikeData = [
   }
 ];
 
+/** Merges API bikes with local catalog extras (cc/torque/hp) when names match */
+function mapApiBike(row) {
+  const extras = fallbackBikeData.find(
+    (b) => b.name.toLowerCase() === String(row.name || '').toLowerCase()
+  ) || {};
+
+  const imagePath = (row.image_url || extras.image || 'img/harly.png').replace(/\\/g, '/');
+
+  return {
+    id: row.id,
+    name: row.name,
+    type: row.type || extras.type || 'Bike',
+    price: String(Math.round(Number(row.price_per_hour) || extras.price || 0)),
+    image: resolveImageUrl(imagePath),
+    tag: extras.tag || (row.availability_status === 'available' ? 'Available' : 'Unavailable'),
+    cc: row.engine_cc || extras.cc || '—',
+    torque: row.torque || extras.torque || '—',
+    horsepower: row.horsepower || extras.horsepower || '—',
+    availability: row.availability_status || 'available'
+  };
+}
+
+let bikeData = [...fallbackBikeData];
+
+function syncPriceRangeToCatalog() {
+  const priceRange = document.getElementById('price-range');
+  const priceLabel = document.getElementById('price-label');
+  if (!priceRange || !bikeData.length) return;
+
+  const prices = bikeData.map((b) => parseInt(b.price, 10)).filter((n) => !Number.isNaN(n));
+  if (!prices.length) return;
+
+  const highest = Math.max(...prices);
+  const max = Math.max(1000, Math.ceil(highest / 50) * 50);
+  priceRange.max = String(max);
+  if (parseInt(priceRange.value, 10) < highest) {
+    priceRange.value = String(max);
+    maxPrice = max;
+    if (priceLabel) priceLabel.textContent = `₹${max}/hr`;
+  }
+}
+
+async function loadBikesFromApi() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/bikes`);
+    if (!response.ok) throw new Error('Failed to fetch bikes');
+    const payload = await response.json();
+    const rows = (payload.data || []).filter(
+      (b) => b.availability_status !== 'unavailable'
+    );
+    if (rows.length > 0) {
+      bikeData = rows.map(mapApiBike);
+      syncPriceRangeToCatalog();
+    }
+  } catch (error) {
+    console.warn('Using local bike catalog — API unavailable:', error.message);
+  }
+}
+
 const destinationData = [
   {
     city: "Mumbai",
@@ -123,6 +192,38 @@ const reviewData = [
   }
 ];
 
+function bookingHref(bike) {
+  const params = new URLSearchParams({
+    bike: bike.name || '',
+    price: String(bike.price || ''),
+    img: bike.image || '',
+    cc: bike.cc || '',
+    torque: bike.torque || '',
+    horsepower: bike.horsepower || ''
+  });
+  if (bike.id) params.set('bikeId', String(bike.id));
+  return `booking.html?${params.toString()}`;
+}
+
+function rememberBikeSelection(bike) {
+  try {
+    sessionStorage.setItem(
+      'selectedBike',
+      JSON.stringify({
+        id: bike.id || null,
+        name: bike.name || '',
+        price: bike.price || '',
+        image: bike.image || '',
+        cc: bike.cc || '',
+        torque: bike.torque || '',
+        horsepower: bike.horsepower || ''
+      })
+    );
+  } catch {
+    /* ignore */
+  }
+}
+
 const createBikeBox = (bike) => `
 <div class="bike-box">
     <img src="${bike.image}" alt="${bike.name}" class="bike-img">
@@ -136,11 +237,7 @@ const createBikeBox = (bike) => `
             <h3 class="bike-price">₹${bike.price}<span>/hour</span></h3>
         </div>
     </div>
-    <a href="booking.html?bike=${encodeURIComponent(bike.name)}&price=${bike.price}&img=${encodeURIComponent(
-  bike.image
-)}&cc=${encodeURIComponent(bike.cc)}&torque=${encodeURIComponent(
-  bike.torque
-)}&horsepower=${encodeURIComponent(bike.horsepower)}" class="book-btn">
+    <a href="${bookingHref(bike)}" class="book-btn" data-bike-book="1">
       Book Bike
     </a>
 </div>`;
@@ -163,7 +260,7 @@ const noResults = document.getElementById("no-results");
 
 // --- search & filter state ---
 let activeType = "All";
-let maxPrice = 250;
+let maxPrice = 1000;
 let searchQuery = "";
 
 function renderBikes() {
@@ -188,10 +285,31 @@ function renderBikes() {
   if (noResults) {
     noResults.classList.toggle("hidden", filtered.length > 0);
   }
+
+  // Persist selection before navigating so booking page still works if query is dropped
+  bikesContainer.querySelectorAll('[data-bike-book]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      const q = href.includes('?') ? href.slice(href.indexOf('?') + 1) : '';
+      const p = new URLSearchParams(q);
+      rememberBikeSelection({
+        id: p.get('bikeId'),
+        name: p.get('bike'),
+        price: p.get('price'),
+        image: p.get('img'),
+        cc: p.get('cc'),
+        torque: p.get('torque'),
+        horsepower: p.get('horsepower')
+      });
+    });
+  });
 }
 
 if (bikesContainer) {
-  renderBikes();
+  loadBikesFromApi().then(() => {
+    renderBikes();
+    attachModalTriggers();
+  });
 
   // search input
   const searchInput = document.getElementById("bike-search");
@@ -199,6 +317,7 @@ if (bikesContainer) {
     searchInput.addEventListener("input", (e) => {
       searchQuery = e.target.value.trim();
       renderBikes();
+      attachModalTriggers();
     });
   }
 
@@ -210,6 +329,7 @@ if (bikesContainer) {
       btn.classList.add("active");
       activeType = btn.dataset.type;
       renderBikes();
+      attachModalTriggers();
     });
   });
 
@@ -221,6 +341,7 @@ if (bikesContainer) {
       maxPrice = parseInt(priceRange.value);
       if (priceLabel) priceLabel.textContent = `₹${maxPrice}/hr`;
       renderBikes();
+      attachModalTriggers();
     });
   }
 }
@@ -261,10 +382,8 @@ function openBikeModal(bike) {
   document.getElementById('modalBikeTorque').textContent = bike.torque;
   document.getElementById('modalBikeHp').textContent   = bike.horsepower;
   document.getElementById('modalBikePrice').textContent = bike.price;
-  document.getElementById('modalBookBtn').href =
-    `booking.html?bike=${encodeURIComponent(bike.name)}&price=${bike.price}` +
-    `&img=${encodeURIComponent(bike.image)}&cc=${encodeURIComponent(bike.cc)}` +
-    `&torque=${encodeURIComponent(bike.torque)}&horsepower=${encodeURIComponent(bike.horsepower)}`;
+  document.getElementById('modalBookBtn').href = bookingHref(bike);
+  document.getElementById('modalBookBtn').onclick = () => rememberBikeSelection(bike);
   bikeModal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
 }

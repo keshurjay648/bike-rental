@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
 import { generateOTP, sendSMSOTP } from '../utils/otp.js';
+import { isAdminUser } from '../middleware/auth.js';
 
 const saltRounds = 10;
 const jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
@@ -9,6 +10,18 @@ const jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
 // Helper function to generate JWT token
 function generateToken(userId, email) {
   return jwt.sign({ userId, email }, jwtSecret, { expiresIn: '7d' });
+}
+
+function publicUser(user) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    phoneVerified: user.phone_verified,
+    role: user.role || 'user',
+    isAdmin: isAdminUser(user)
+  };
 }
 
 // Helper function to validate email
@@ -78,7 +91,10 @@ export async function register(req, res) {
     const insertUserQuery = `
       INSERT INTO users (name, email, phone, password_hash)
       VALUES ($1, $2, $3, $4)
-      RETURNING id, name, email, phone, email_verified, phone_verified
+      RETURNING id, name, email, phone,
+                COALESCE(email_verified, FALSE) AS email_verified,
+                phone_verified,
+                COALESCE(role, 'user') AS role
     `;
     const userResult = await pool.query(insertUserQuery, [name, email, phone, passwordHash]);
     const user = userResult.rows[0];
@@ -106,13 +122,7 @@ export async function register(req, res) {
       success: true,
       message: 'User registered successfully. Please verify your phone number.',
       data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          phoneVerified: user.phone_verified
-        },
+        user: publicUser(user),
         token
       }
     });
@@ -148,7 +158,10 @@ export async function login(req, res) {
 
     // Find user
     const userQuery = `
-      SELECT id, name, email, phone, password_hash, email_verified, phone_verified
+      SELECT id, name, email, phone, password_hash,
+             COALESCE(email_verified, FALSE) AS email_verified,
+             phone_verified,
+             COALESCE(role, 'user') AS role
       FROM users WHERE email = $1
     `;
     const userResult = await pool.query(userQuery, [email]);
@@ -179,13 +192,7 @@ export async function login(req, res) {
       success: true,
       message: 'Login successful',
       data: {
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          phoneVerified: user.phone_verified
-        },
+        user: publicUser(user),
         token
       }
     });

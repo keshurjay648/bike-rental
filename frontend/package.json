@@ -4,9 +4,9 @@
   "description": "Torque Rentals — Bike & Scooter Rental Web App",
   "main": "index.html",
   "scripts": {
-    "dev": "npx serve .",
+    "dev": "npx serve . -c serve.json",
     "build": "echo 'No build process needed - static files'",
-    "start": "npx serve . -p 3000"
+    "start": "npx serve . -c serve.json -p 3000"
   },
   "devDependencies": {
     "serve": "^14.2.1"

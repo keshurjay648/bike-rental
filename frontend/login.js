@@ -64,10 +64,17 @@ loginForm.addEventListener("submit", async (event) => {
       window.authUI.checkAuthStatus();
     }
     
-    // Redirect to index page after a short delay
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect') || 'index.html';
+    // Allow booking.html?bike=... and other relative app pages only
+    const safeRedirect =
+      redirect.startsWith('http') || redirect.startsWith('//') || redirect.includes('://')
+        ? 'index.html'
+        : redirect;
+
     setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1500);
+      window.location.href = safeRedirect;
+    }, 800);
 
   } catch (error) {
     setLoginMessage(error.message || "Login failed. Please try again.", true);

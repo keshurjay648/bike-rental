@@ -1,12 +1,66 @@
 const API_BASE_URL = "http://localhost:5003/api";
+const API_ORIGIN = "http://localhost:5003";
 
 const params = new URLSearchParams(window.location.search);
-const bike = params.get("bike");
-const price = Number(params.get("price") || 0);
-const img = params.get("img");
-const cc = params.get("cc");
-const torque = params.get("torque");
-const horsepower = params.get("horsepower");
+
+function readStoredBike() {
+  try {
+    return JSON.parse(sessionStorage.getItem("selectedBike") || "null");
+  } catch {
+    return null;
+  }
+}
+
+const storedBike = readStoredBike();
+
+/** Selected bike state — from URL params, then sessionStorage backup */
+const selectedBike = {
+  id: params.get("bikeId")
+    ? Number(params.get("bikeId"))
+    : storedBike?.id
+      ? Number(storedBike.id)
+      : null,
+  name: params.get("bike") || storedBike?.name || "",
+  price: Number(params.get("price") || storedBike?.price || 0),
+  image: params.get("img") || storedBike?.image || "",
+  cc: params.get("cc") || storedBike?.cc || "",
+  torque: params.get("torque") || storedBike?.torque || "",
+  horsepower: params.get("horsepower") || storedBike?.horsepower || ""
+};
+
+// If URL lost query params (clean-url redirect), restore them so refresh/share still works
+if (!params.get("bike") && selectedBike.name) {
+  const restored = new URLSearchParams({
+    bike: selectedBike.name,
+    price: String(selectedBike.price || ""),
+    img: selectedBike.image || "",
+    cc: selectedBike.cc || "",
+    torque: selectedBike.torque || "",
+    horsepower: selectedBike.horsepower || ""
+  });
+  if (selectedBike.id) restored.set("bikeId", String(selectedBike.id));
+  const next = `${window.location.pathname}?${restored.toString()}`;
+  window.history.replaceState({}, "", next);
+}
+
+// Legacy aliases used later in this file
+let bike = selectedBike.name;
+let price = selectedBike.price;
+let img = selectedBike.image;
+
+function resolveImageUrl(url) {
+  if (!url) return "img/harly.png";
+  const cleaned = String(url).replace(/\\/g, "/");
+  if (/^https?:\/\//i.test(cleaned) || cleaned.startsWith("data:")) return cleaned;
+  if (cleaned.startsWith("/uploads/")) return `${API_ORIGIN}${cleaned}`;
+  return cleaned;
+}
+
+function isPlaceholderSpec(value) {
+  if (!value) return true;
+  const v = String(value).trim();
+  return !v || v === "-" || v === "—" || v.toLowerCase() === "null" || v.toLowerCase() === "undefined";
+}
 
 const bookingMessage = document.getElementById("bookingMessage");
 const bikeNameEl = document.getElementById("bikeName");
@@ -139,11 +193,10 @@ const mumbaiPickupLocations = [
   }
 ];
 
-if (bike) {
-  bikeNameEl.innerText = bike;
-  bikePriceEl.innerText = String(price);
-  bikeImgEl.src = img;
-  bikeDescriptionEl.innerText = "Loading bike details...";
+if (selectedBike.name || selectedBike.id) {
+  applyBikeToUi(selectedBike);
+} else if (bikeDescriptionEl) {
+  bikeDescriptionEl.innerText = "Select a bike from the home page to start booking.";
 }
 
 const randomPickup = mumbaiPickupLocations[Math.floor(Math.random() * mumbaiPickupLocations.length)];
@@ -151,11 +204,37 @@ pickupLocationNameEl.innerText = randomPickup.name;
 pickupLocationAddressEl.innerText = randomPickup.address;
 pickupMapEl.src = `https://maps.google.com/maps?q=${encodeURIComponent(randomPickup.query)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
 
+function applyBikeToUi(data) {
+  selectedBike.id = data.id || selectedBike.id;
+  selectedBike.name = data.name || selectedBike.name;
+  selectedBike.price = Number(data.price || selectedBike.price || 0);
+  selectedBike.image = resolveImageUrl(data.image || selectedBike.image);
+  selectedBike.cc = !isPlaceholderSpec(data.cc) ? data.cc : selectedBike.cc;
+  selectedBike.torque = !isPlaceholderSpec(data.torque) ? data.torque : selectedBike.torque;
+  selectedBike.horsepower = !isPlaceholderSpec(data.horsepower)
+    ? data.horsepower
+    : selectedBike.horsepower;
+
+  bike = selectedBike.name;
+  price = selectedBike.price;
+  img = selectedBike.image;
+
+  if (bikeNameEl) bikeNameEl.innerText = selectedBike.name || "Bike";
+  if (bikePriceEl) bikePriceEl.innerText = selectedBike.price ? String(selectedBike.price) : "—";
+  if (bikeImgEl) {
+    bikeImgEl.src = selectedBike.image || "img/harly.png";
+    bikeImgEl.onerror = () => {
+      bikeImgEl.onerror = null;
+      bikeImgEl.src = "img/harly.png";
+    };
+  }
+}
+
 function setBikeDetails(specs, description) {
-  bikeCcEl.innerText = specs.cc || "-";
-  bikeTorqueEl.innerText = specs.torque || "-";
-  bikeHorsepowerEl.innerText = specs.horsepower || "-";
-  bikeDescriptionEl.innerText = description;
+  bikeCcEl.innerText = !isPlaceholderSpec(specs.cc) ? specs.cc : "-";
+  bikeTorqueEl.innerText = !isPlaceholderSpec(specs.torque) ? specs.torque : "-";
+  bikeHorsepowerEl.innerText = !isPlaceholderSpec(specs.horsepower) ? specs.horsepower : "-";
+  if (description) bikeDescriptionEl.innerText = description;
 }
 
 function cleanSpecValue(value) {
@@ -179,6 +258,9 @@ function readInfoboxMetric(doc, labels) {
 }
 
 async function fetchWikipediaSummary(wikiTitle) {
+  if (!wikiTitle || String(wikiTitle).toLowerCase() === "null") {
+    throw new Error("missing wiki title");
+  }
   const response = await fetch(
     `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikiTitle)}`
   );
@@ -188,6 +270,9 @@ async function fetchWikipediaSummary(wikiTitle) {
 }
 
 async function fetchWikipediaInfoboxSpecs(wikiTitle) {
+  if (!wikiTitle || String(wikiTitle).toLowerCase() === "null") {
+    throw new Error("missing wiki title");
+  }
   const response = await fetch(
     `https://en.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(
       wikiTitle
@@ -206,23 +291,88 @@ async function fetchWikipediaInfoboxSpecs(wikiTitle) {
   };
 }
 
+async function hydrateBikeFromApi() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/bikes`);
+    const payload = await response.json();
+    if (!response.ok || !payload.success) return null;
+
+    const rows = payload.data || [];
+    let match = null;
+    if (selectedBike.id) {
+      match = rows.find((item) => Number(item.id) === Number(selectedBike.id));
+    }
+    if (!match && selectedBike.name) {
+      match = rows.find(
+        (item) =>
+          String(item.name || "").toLowerCase() === selectedBike.name.toLowerCase()
+      );
+    }
+    if (!match) return null;
+
+    return {
+      id: match.id,
+      name: match.name,
+      price: Math.round(Number(match.price_per_hour) || 0),
+      image: resolveImageUrl(match.image_url),
+      cc: match.engine_cc || "",
+      torque: match.torque || "",
+      horsepower: match.horsepower || ""
+    };
+  } catch {
+    return null;
+  }
+}
+
 async function loadExternalBikeData() {
-  const meta = bikeExternalMeta[bike] || {
-    wikiTitle: bike,
-    fallbackDescription: "A reliable rental bike built for city and highway rides.",
+  const fromApi = await hydrateBikeFromApi();
+  if (fromApi) {
+    applyBikeToUi({
+      ...fromApi,
+      // Prefer API specs, else keep URL params
+      cc: fromApi.cc || selectedBike.cc,
+      torque: fromApi.torque || selectedBike.torque,
+      horsepower: fromApi.horsepower || selectedBike.horsepower,
+      image: selectedBike.image && selectedBike.image.includes("/uploads/")
+        ? selectedBike.image
+        : fromApi.image || selectedBike.image,
+      price: fromApi.price || selectedBike.price
+    });
+  }
+
+  if (!selectedBike.name && !selectedBike.id) {
+    setBikeDetails(
+      { cc: "-", torque: "-", horsepower: "-" },
+      "No bike selected. Go back to the home page and choose a bike to book."
+    );
+    return;
+  }
+
+  const name = selectedBike.name;
+  const meta = bikeExternalMeta[name] || {
+    wikiTitle: null,
+    fallbackDescription: `${name} is available for hourly rental in Mumbai.`,
     fallbackSpecs: {
-      cc: cc || "-",
-      torque: torque || "-",
-      horsepower: horsepower || "-"
+      cc: selectedBike.cc || "-",
+      torque: selectedBike.torque || "-",
+      horsepower: selectedBike.horsepower || "-"
     }
   };
 
   const defaultSpecs = {
-    cc: cc || meta.fallbackSpecs.cc || "-",
-    torque: torque || meta.fallbackSpecs.torque || "-",
-    horsepower: horsepower || meta.fallbackSpecs.horsepower || "-"
+    cc: !isPlaceholderSpec(selectedBike.cc) ? selectedBike.cc : meta.fallbackSpecs.cc,
+    torque: !isPlaceholderSpec(selectedBike.torque)
+      ? selectedBike.torque
+      : meta.fallbackSpecs.torque,
+    horsepower: !isPlaceholderSpec(selectedBike.horsepower)
+      ? selectedBike.horsepower
+      : meta.fallbackSpecs.horsepower
   };
+
   setBikeDetails(defaultSpecs, meta.fallbackDescription);
+
+  // Only enrich from Wikipedia for known catalog bikes with a real wiki page
+  if (!meta.wikiTitle) return;
 
   try {
     const [externalDescription, externalSpecs] = await Promise.all([
@@ -232,9 +382,13 @@ async function loadExternalBikeData() {
 
     setBikeDetails(
       {
-        cc: externalSpecs.cc || defaultSpecs.cc,
-        torque: externalSpecs.torque || defaultSpecs.torque,
-        horsepower: externalSpecs.horsepower || defaultSpecs.horsepower
+        cc: !isPlaceholderSpec(defaultSpecs.cc) ? defaultSpecs.cc : externalSpecs.cc || defaultSpecs.cc,
+        torque: !isPlaceholderSpec(defaultSpecs.torque)
+          ? defaultSpecs.torque
+          : externalSpecs.torque || defaultSpecs.torque,
+        horsepower: !isPlaceholderSpec(defaultSpecs.horsepower)
+          ? defaultSpecs.horsepower
+          : externalSpecs.horsepower || defaultSpecs.horsepower
       },
       externalDescription || meta.fallbackDescription
     );
@@ -246,6 +400,16 @@ async function loadExternalBikeData() {
 // Initialize authentication check when page loads
 document.addEventListener('DOMContentLoaded', function() {
   checkAuthStatus();
+
+  // Keep full booking URL (with bike params) when sending user to login/signup
+  const returnTo = encodeURIComponent(
+    `${window.location.pathname}${window.location.search}` || "booking.html"
+  );
+  const loginLink = document.getElementById("bookingLoginLink");
+  const signupLink = document.getElementById("bookingSignupLink");
+  if (loginLink) loginLink.href = `login.html?redirect=${returnTo}`;
+  if (signupLink) signupLink.href = `signup.html?redirect=${returnTo}`;
+
   loadExternalBikeData();
   initializeDatePickers();
 });
@@ -274,8 +438,6 @@ function initializeDatePickers() {
   }
 }
 
-loadExternalBikeData();
-
 function setMessage(message, isError = false) {
   bookingMessage.innerText = message;
   bookingMessage.style.color = isError ? "#d93025" : "#188038";
@@ -300,6 +462,8 @@ function calculateTotal() {
 }
 
 async function getBikeIdByName(name) {
+  if (selectedBike.id) return selectedBike.id;
+
   const response = await fetch(`${API_BASE_URL}/bikes`);
   const payload = await response.json();
 
@@ -307,11 +471,14 @@ async function getBikeIdByName(name) {
     throw new Error(payload.message || "Failed to fetch bikes");
   }
 
-  const matchedBike = payload.data.find((item) => item.name === name);
+  const matchedBike = payload.data.find(
+    (item) => String(item.name || "").toLowerCase() === String(name || "").toLowerCase()
+  );
   if (!matchedBike) {
     throw new Error(`Bike "${name}" not found in backend database`);
   }
 
+  selectedBike.id = matchedBike.id;
   return matchedBike.id;
 }
 
@@ -321,6 +488,11 @@ async function confirmBooking() {
     const currentUser = getCurrentUser();
     if (!currentUser) {
       setMessage("Please login to book this bike", true);
+      return;
+    }
+
+    if (!selectedBike.name && !selectedBike.id) {
+      setMessage("No bike selected. Go back and choose a bike.", true);
       return;
     }
 
@@ -339,7 +511,7 @@ async function confirmBooking() {
     const customerName = currentUser.name || 'User';
     const customerEmail = currentUser.email || 'Not provided';
 
-    const bikeId = await getBikeIdByName(bike);
+    const bikeId = await getBikeIdByName(selectedBike.name);
 
     // Try backend API first
     try {
