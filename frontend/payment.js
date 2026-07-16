@@ -146,7 +146,7 @@ async function startPayment() {
     setMsg("Creating payment order…");
     payNowBtn.disabled = true;
 
-    const amount = Number(
+    const amount = _bookingAmount || Number(
       booking.totalPrice || booking.total_amount || booking.total_price || 0
     );
 
@@ -187,11 +187,11 @@ async function startPayment() {
         }
       },
       prefill: {
-        name:  custName,
-        email: custEmail
+        name:  _custName,
+        email: _custEmail
       },
       notes: {
-        bike: booking.bikeName || booking.bike_name || ""
+        bike: _bikeName
       },
       theme: { color: "#ff4424" },
       modal: {
