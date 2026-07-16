@@ -1,123 +1,414 @@
-.payment-section {
-  padding-top: 7.5rem;
+/* ── Checkout Steps in Header ─────────────────────────────── */
+.checkout-steps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-alter-color);
+  white-space: nowrap;
+}
+
+.step.done  { color: #28a745; }
+.step.active { color: var(--main-color); font-weight: 700; }
+
+.step-divider {
+  width: 28px;
+  height: 1px;
+  background: #ddd;
+}
+
+/* ── Page ─────────────────────────────────────────────────── */
+.checkout-page {
+  padding-top: 7rem;
   background: var(--container-color);
   min-height: 100vh;
 }
 
-.payment-wrap {
-  padding: 2rem 0 3rem;
+.checkout-wrap {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+  padding: 2rem 1rem 4rem;
+  align-items: start;
 }
 
-.payment-box.booking-form {
-  max-width: 520px;
-  margin: 0 auto;
+/* ── Summary cards (left column) ─────────────────────────── */
+.checkout-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.payment-box h2 {
-  margin-bottom: 0.2rem;
-  font-size: 1.8rem;
-  color: var(--text-color);
+.summary-card {
+  background: var(--bg-color);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
-.payment-subtitle {
-  margin-bottom: 0.9rem;
-  color: var(--text-alter-color);
-  font-size: 0.9rem;
+/* Bike row */
+.summary-bike {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.payment-summary {
+.summary-bike-img {
+  width: 110px;
+  height: 80px;
+  object-fit: contain;
   background: var(--container-color);
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  padding: 6px;
+  flex-shrink: 0;
 }
 
-.payment-row {
+.summary-bike-info h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.summary-bike-type {
+  font-size: 0.82rem;
+  color: var(--text-alter-color);
+  margin-bottom: 6px;
+}
+
+/* Section title inside card */
+.summary-section-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-alter-color);
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.summary-section-title i { color: var(--second-color); font-size: 1rem; }
+
+/* Detail rows */
+.detail-rows { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  gap: 1rem;
+}
+
+.detail-row span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-alter-color);
+}
+
+.detail-row span i { color: var(--second-color); font-size: 0.95rem; }
+.detail-row strong { color: var(--text-color); font-weight: 600; text-align: right; }
+
+/* Price breakdown */
+.price-rows { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-alter-color);
+}
+
+.price-row.total-row {
+  padding-top: 0.6rem;
+  border-top: 1px solid #eee;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-top: 0.2rem;
+}
+
+.free-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #28a745;
+  background: #e6f4ea;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* Booking ID card */
+.booking-id-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin: 0;
+  font-size: 0.88rem;
 }
 
-.payment-row + .payment-row {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5ddd7;
-}
-
-.payment-row .label {
+.booking-id-card span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: var(--text-alter-color);
-  font-size: 0.9rem;
 }
 
-.payment-row .value {
+.booking-id-card strong {
+  font-family: monospace;
+  font-size: 0.85rem;
   color: var(--text-color);
+  background: var(--container-color);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+/* ── Payment card (right column) ─────────────────────────── */
+.checkout-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: sticky;
+  top: 7rem;
+}
+
+.payment-card {
+  background: var(--bg-color);
+  border-radius: 16px;
+  padding: 1.6rem 1.4rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--main-color);
+}
+
+.payment-card-header { margin-bottom: 1.2rem; }
+
+.payment-card-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 3px;
+}
+
+.payment-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-alter-color);
+}
+
+/* Amount highlight */
+.amount-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--container-color);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.amount-label {
+  font-size: 0.85rem;
+  color: var(--text-alter-color);
+  font-weight: 500;
+}
+
+.amount-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--second-color);
+}
+
+/* Pay button */
+.pay-btn {
+  width: 100%;
+  background: var(--main-color);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 0.8rem;
+}
+
+.pay-btn:hover {
+  background: var(--second-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255,68,36,0.3);
+}
+
+.pay-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.pay-btn i { font-size: 1.1rem; }
+
+.payment-message {
+  min-height: 20px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 0.8rem;
+}
+
+/* Trust badges */
+.trust-badges {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #f0ebe5;
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-alter-color);
+  font-weight: 500;
+}
+
+.trust-badge i {
+  font-size: 1.3rem;
+  color: #28a745;
+}
+
+/* Payment methods */
+.payment-methods {
+  border-top: 1px solid #f0ebe5;
+  padding-top: 0.9rem;
+}
+
+.methods-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-alter-color);
+  display: block;
+  margin-bottom: 0.6rem;
   font-weight: 600;
 }
 
-.payment-row .amount {
-  font-size: 1rem;
+.methods-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.method-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--text-color);
+  background: var(--container-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.method-tag i { font-size: 0.9rem; color: var(--second-color); }
+
+/* What's included card */
+.included-card {
+  background: var(--bg-color);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.included-card h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-alter-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.9rem;
+}
+
+.included-card h4 i { color: var(--second-color); font-size: 1rem; }
+
+.included-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.included-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
   color: var(--text-color);
 }
 
-#payNowBtn {
-  margin-top: 0.25rem;
+.included-list li i {
+  color: #28a745;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 
-#payNowBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-#paymentMessage {
-  min-height: 20px;
-  margin-top: 0.15rem;
-  font-size: 0.9rem;
-}
-
-/* ═══════════════════════════════════════════
-   PAYMENT PAGE — MOBILE (≤ 767px)
-═══════════════════════════════════════════ */
+/* ── Mobile (≤ 767px) ─────────────────────────────────────── */
 @media (max-width: 767px) {
-  .payment-section {
-    padding-top: 56px;
-    min-height: 100vh;
+  .checkout-page { padding-top: 52px; }
+
+  .checkout-wrap {
+    grid-template-columns: 1fr;
+    padding: 1rem 16px 3rem;
+    gap: 1rem;
   }
 
-  .payment-wrap {
-    padding: 1.5rem 16px 3rem;
-  }
+  /* On mobile: payment card comes first */
+  .checkout-payment { order: -1; position: static; top: unset; }
 
-  .payment-box.booking-form {
-    max-width: 100%;
-    padding: 1.4rem 1.2rem;
-    border-radius: 16px;
-  }
+  .payment-card { padding: 1.3rem 1.1rem; }
+  .payment-card-header h2 { font-size: 1.3rem; }
+  .amount-value { font-size: 1.5rem; }
+  .pay-btn { padding: 14px; font-size: 0.95rem; }
 
-  .payment-box h2 { font-size: 1.5rem; }
-  .payment-subtitle { font-size: 0.85rem; }
+  .summary-bike-img { width: 85px; height: 65px; }
+  .summary-bike-info h3 { font-size: 1rem; }
 
-  .payment-summary {
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-  }
+  .checkout-steps { display: none; }
+}
 
-  .payment-row { gap: 0.5rem; }
-  .payment-row .label  { font-size: 0.85rem; }
-  .payment-row .value  { font-size: 0.9rem; }
-  .payment-row .amount { font-size: 1rem; }
+@media (max-width: 380px) {
+  .amount-value { font-size: 1.3rem; }
+  .trust-badges { gap: 0; }
+  .trust-badge { font-size: 0.65rem; }
+}
 
-  #payNowBtn {
-    margin-top: 1rem;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    border-radius: 12px;
-    width: 100%;
-    min-height: 52px;
-  }
-
-  #paymentMessage { font-size: 0.88rem; margin-top: 0.8rem; }
+/* Print */
+@media print {
+  .pay-btn, .checkout-steps { display: none; }
+  .checkout-page { padding-top: 0; }
 }

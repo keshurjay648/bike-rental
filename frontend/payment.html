@@ -1,48 +1,188 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="booking.css" />
-    <link rel="stylesheet" href="payment.css" />
-  </head>
-  <body>
-    <header>
-      <div class="nav container">
-        <a href="index.html" class="logo">
-          <img src="img/logo.png" width="80" height="40" />
-        </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Torque Rentals</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="payment.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <div class="nav container">
+      <a href="index.html" class="logo">
+        <img src="img/logo.png" width="80" height="40" alt="Torque Rentals" />
+      </a>
+      <div class="checkout-steps">
+        <span class="step done"><i class="ri-calendar-check-line"></i> Booking</span>
+        <span class="step-divider"></span>
+        <span class="step active"><i class="ri-bank-card-line"></i> Payment</span>
+        <span class="step-divider"></span>
+        <span class="step"><i class="ri-checkbox-circle-line"></i> Confirmed</span>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <section class="booking payment-section">
-      <div class="container payment-wrap">
-        <div class="booking-form payment-box">
-        <h2>Complete Payment</h2>
-        <p class="payment-subtitle">Secure checkout powered by Razorpay</p>
+  <main class="checkout-page">
+    <div class="container checkout-wrap">
 
-        <div class="payment-summary">
-          <p class="payment-row">
-            <span class="label">Booking ID</span>
-            <span class="value" id="bookingId">-</span>
-          </p>
-          <p class="payment-row">
-            <span class="label">Amount</span>
-            <span class="value amount">₹<span id="bookingAmount">0</span></span>
-          </p>
+      <!-- LEFT — Order Summary -->
+      <div class="checkout-summary">
+
+        <!-- Bike card -->
+        <div class="summary-card">
+          <div class="summary-bike">
+            <img id="summaryBikeImg" src="img/harly.png" alt="" class="summary-bike-img" />
+            <div class="summary-bike-info">
+              <h3 id="summaryBikeName">—</h3>
+              <p id="summaryBikeType" class="summary-bike-type">—</p>
+              <span class="tag" id="summaryBikeTag">Free cancellation</span>
+            </div>
+          </div>
         </div>
 
-        <button id="payNowBtn">Pay with Razorpay</button>
-        <p id="paymentMessage"></p>
+        <!-- Trip details -->
+        <div class="summary-card">
+          <h4 class="summary-section-title"><i class="ri-route-line"></i> Trip Details</h4>
+          <div class="detail-rows">
+            <div class="detail-row">
+              <span><i class="ri-calendar-line"></i> Pickup</span>
+              <strong id="summaryPickup">—</strong>
+            </div>
+            <div class="detail-row">
+              <span><i class="ri-calendar-check-line"></i> Drop-off</span>
+              <strong id="summaryDrop">—</strong>
+            </div>
+            <div class="detail-row">
+              <span><i class="ri-time-line"></i> Duration</span>
+              <strong id="summaryDuration">—</strong>
+            </div>
+            <div class="detail-row">
+              <span><i class="ri-map-pin-line"></i> Pickup Point</span>
+              <strong id="summaryLocation">Mumbai</strong>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
 
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="toast.js"></script>
-    <script src="payment.js"></script>
-  </body>
+        <!-- Customer info -->
+        <div class="summary-card">
+          <h4 class="summary-section-title"><i class="ri-user-line"></i> Rider Details</h4>
+          <div class="detail-rows">
+            <div class="detail-row">
+              <span><i class="ri-user-line"></i> Name</span>
+              <strong id="summaryName">—</strong>
+            </div>
+            <div class="detail-row">
+              <span><i class="ri-mail-line"></i> Email</span>
+              <strong id="summaryEmail">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price breakdown -->
+        <div class="summary-card">
+          <h4 class="summary-section-title"><i class="ri-receipt-line"></i> Price Breakdown</h4>
+          <div class="price-rows">
+            <div class="price-row">
+              <span id="pricePerHourLabel">₹0 × 0 hrs</span>
+              <span id="priceSubtotal">₹0</span>
+            </div>
+            <div class="price-row">
+              <span>Platform fee</span>
+              <span class="free-tag">FREE</span>
+            </div>
+            <div class="price-row">
+              <span>Insurance</span>
+              <span class="free-tag">INCLUDED</span>
+            </div>
+            <div class="price-row total-row">
+              <span>Total</span>
+              <span id="summaryTotal">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking ID -->
+        <div class="summary-card booking-id-card">
+          <span><i class="ri-hashtag"></i> Booking ID</span>
+          <strong id="summaryBookingId">—</strong>
+        </div>
+
+      </div>
+
+      <!-- RIGHT — Payment action -->
+      <div class="checkout-payment">
+
+        <div class="payment-card">
+          <div class="payment-card-header">
+            <h2>Complete Payment</h2>
+            <p class="payment-subtitle">Secure checkout powered by Razorpay</p>
+          </div>
+
+          <!-- Amount highlight -->
+          <div class="amount-highlight">
+            <span class="amount-label">Amount to pay</span>
+            <span class="amount-value">₹<span id="payAmount">0</span></span>
+          </div>
+
+          <!-- Pay button -->
+          <button id="payNowBtn" class="pay-btn">
+            <i class="ri-bank-card-line"></i>
+            <span>Pay ₹<span id="payBtnAmount">0</span> Now</span>
+          </button>
+
+          <p id="paymentMessage" class="payment-message"></p>
+
+          <!-- Trust badges -->
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <i class="ri-shield-check-line"></i>
+              <span>100% Secure</span>
+            </div>
+            <div class="trust-badge">
+              <i class="ri-lock-line"></i>
+              <span>Encrypted</span>
+            </div>
+            <div class="trust-badge">
+              <i class="ri-refund-2-line"></i>
+              <span>Free Cancel</span>
+            </div>
+          </div>
+
+          <!-- Payment methods -->
+          <div class="payment-methods">
+            <span class="methods-label">Accepted payments</span>
+            <div class="methods-list">
+              <span class="method-tag"><i class="ri-visa-line"></i> Visa</span>
+              <span class="method-tag"><i class="ri-mastercard-line"></i> Mastercard</span>
+              <span class="method-tag"><i class="ri-smartphone-line"></i> UPI</span>
+              <span class="method-tag"><i class="ri-wallet-3-line"></i> Wallets</span>
+              <span class="method-tag"><i class="ri-bank-line"></i> Net Banking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- What's included -->
+        <div class="included-card">
+          <h4><i class="ri-gift-line"></i> What's Included</h4>
+          <ul class="included-list">
+            <li><i class="ri-checkbox-circle-fill"></i> Helmet (on request)</li>
+            <li><i class="ri-checkbox-circle-fill"></i> Basic insurance coverage</li>
+            <li><i class="ri-checkbox-circle-fill"></i> 24/7 roadside support</li>
+            <li><i class="ri-checkbox-circle-fill"></i> Full tank of fuel</li>
+            <li><i class="ri-checkbox-circle-fill"></i> Free cancellation</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="toast.js"></script>
+  <script src="payment.js"></script>
+</body>
 </html>
