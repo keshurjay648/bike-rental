@@ -17,25 +17,21 @@ const configuredOrigins = env.corsOrigin
   .filter(Boolean);
 
 const localDevOriginPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i;
+const vercelPattern = /^https:\/\/[\w-]+\.vercel\.app$/i;
+const renderPattern = /^https:\/\/[\w-]+\.onrender\.com$/i;
 const allowedOrigins = Array.from(new Set([...configuredOrigins]));
 
 app.use(
   cors({
     origin(origin, callback) {
-      // Allow non-browser requests (curl, server-to-server, health checks).
-      // Also allow browsers that report origin as "null" (e.g. file://)
       if (!origin || origin === "null") return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      if (localDevOriginPattern.test(origin)) {
-        return callback(null, true);
-      }
-
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (localDevOriginPattern.test(origin)) return callback(null, true);
+      if (vercelPattern.test(origin)) return callback(null, true);
+      if (renderPattern.test(origin)) return callback(null, true);
       return callback(new Error(`CORS blocked for origin: ${origin}`), false);
-    }
+    },
+    credentials: true
   })
 );
 app.use(express.json());
