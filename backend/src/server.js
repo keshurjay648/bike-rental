@@ -11,7 +11,8 @@ async function bootstrap() {
       console.log(`Server running on http://localhost:${env.port}`);
     });
   } catch (error) {
-    console.error("Failed to start server:", error.message);
+    console.error("Failed to start server:");
+    console.error(error);
     process.exit(1);
   }
 }
