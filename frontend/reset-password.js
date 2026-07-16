@@ -1,7 +1,7 @@
 const resetPasswordForm = document.getElementById("resetPasswordForm");
 const message = document.getElementById("message");
 
-const API_BASE_URL = 'http://localhost:5003/api';
+const API_BASE_URL = 'https://bike-rental-2-msm9.onrender.com/api';
 
 function setMessage(msg, isError = false) {
   message.innerText = msg;

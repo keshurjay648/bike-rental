@@ -181,7 +181,7 @@ class ProfileManager {
                 throw new Error('No auth token found. Please log in again.');
             }
 
-            const response = await fetch('http://localhost:5003/api/auth/delete-account', {
+            const response = await fetch('https://bike-rental-2-msm9.onrender.com/api/auth/delete-account', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ class ProfileManager {
         try {
             const token = localStorage.getItem('authToken');
             
-            const response = await fetch('http://localhost:5003/api/auth/profile', {
+            const response = await fetch('https://bike-rental-2-msm9.onrender.com/api/auth/profile', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

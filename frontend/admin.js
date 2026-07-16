@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:5003/api';
-const API_ORIGIN = 'http://localhost:5003';
+const API_BASE_URL = 'https://bike-rental-2-msm9.onrender.com/api';
+const API_ORIGIN = 'https://bike-rental-2-msm9.onrender.com';
 
 const gateEl = document.getElementById('adminGate');
 const gateMessage = document.getElementById('adminGateMessage');

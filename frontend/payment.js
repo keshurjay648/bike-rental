@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5003/api";
+const API_BASE_URL = "https://bike-rental-2-msm9.onrender.com/api";
 
 const paymentMessage = document.getElementById("paymentMessage");
 const payNowBtn = document.getElementById("payNowBtn");

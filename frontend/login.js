@@ -1,7 +1,7 @@
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 
-const API_BASE_URL = 'http://localhost:5003/api';
+const API_BASE_URL = 'https://bike-rental-2-msm9.onrender.com/api';
 
 function setLoginMessage(message, isError = false) {
   loginMessage.innerText = message;
