@@ -364,6 +364,9 @@ const menu = document.querySelector(".menu-icon");
 if (menu) {
   menu.onclick = () => {
     menu.classList.toggle("move");
+    // toggle mobile nav drawer
+    const navbar = document.querySelector(".navbar");
+    if (navbar) navbar.classList.toggle("show");
   };
 }
 

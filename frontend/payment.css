@@ -76,331 +76,48 @@
   font-size: 0.9rem;
 }
 
-/* Tablet Landscape - 768px to 1023px */
-@media (max-width: 1023px) and (min-width: 768px) {
-    .payment-section {
-        padding-top: 6.5rem;
-    }
-
-    .payment-wrap {
-        padding: 1.5rem 0 2rem;
-    }
-
-    .payment-box.booking-form {
-        max-width: 480px;
-        padding: 1.5rem;
-    }
-
-    .payment-box h2 {
-        font-size: 1.6rem;
-    }
-
-    .payment-subtitle {
-        font-size: 0.85rem;
-        margin-bottom: 0.7rem;
-    }
-
-    .payment-summary {
-        padding: 8px;
-        margin-bottom: 0.4rem;
-    }
-
-    .payment-row {
-        gap: 0.4rem;
-        margin-bottom: 0;
-    }
-
-    .payment-row + .payment-row {
-        margin-top: 0.4rem;
-        padding-top: 0.4rem;
-    }
-
-    .payment-row .label {
-        font-size: 0.85rem;
-    }
-
-    .payment-row .value {
-        font-size: 0.9rem;
-    }
-
-    .payment-row .amount {
-        font-size: 0.95rem;
-    }
-
-    #payNowBtn {
-        margin-top: 0.2rem;
-        padding: 0.8rem;
-        font-size: 0.9rem;
-    }
-
-    #paymentMessage {
-        font-size: 0.85rem;
-        margin-top: 0.1rem;
-    }
-}
-
-/* Tablet Portrait - 600px to 767px */
-@media (max-width: 767px) and (min-width: 600px) {
-    .payment-section {
-        padding-top: 6rem;
-    }
-
-    .payment-wrap {
-        padding: 1rem 0 1.5rem;
-    }
-
-    .payment-box.booking-form {
-        max-width: 100%;
-        padding: 1.2rem;
-        border-radius: 12px;
-    }
-
-    .payment-box h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0.15rem;
-    }
-
-    .payment-subtitle {
-        font-size: 0.8rem;
-        margin-bottom: 0.6rem;
-    }
-
-    .payment-summary {
-        padding: 6px;
-        margin-bottom: 0.3rem;
-    }
-
-    .payment-row {
-        gap: 0.3rem;
-        margin-bottom: 0;
-    }
-
-    .payment-row + .payment-row {
-        margin-top: 0.3rem;
-        padding-top: 0.3rem;
-    }
-
-    .payment-row .label {
-        font-size: 0.8rem;
-    }
-
-    .payment-row .value {
-        font-size: 0.85rem;
-    }
-
-    .payment-row .amount {
-        font-size: 0.9rem;
-    }
-
-    #payNowBtn {
-        margin-top: 0.15rem;
-        padding: 0.7rem;
-        font-size: 0.85rem;
-    }
-
-    #paymentMessage {
-        font-size: 0.8rem;
-        margin-top: 0.08rem;
-    }
-}
-
-/* Mobile Landscape - 480px to 599px */
-@media (max-width: 599px) and (min-width: 480px) {
-    .payment-section {
-        padding-top: 5.5rem;
-    }
-
-    .payment-wrap {
-        padding: 0.8rem 0 1rem;
-    }
-
-    .payment-box.booking-form {
-        max-width: 100%;
-        padding: 1rem;
-        border-radius: 10px;
-    }
-
-    .payment-box h2 {
-        font-size: 1.4rem;
-        margin-bottom: 0.1rem;
-    }
-
-    .payment-subtitle {
-        font-size: 0.75rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .payment-summary {
-        padding: 5px;
-        margin-bottom: 0.2rem;
-    }
-
-    .payment-row {
-        gap: 0.25rem;
-        margin-bottom: 0;
-    }
-
-    .payment-row + .payment-row {
-        margin-top: 0.25rem;
-        padding-top: 0.25rem;
-    }
-
-    .payment-row .label {
-        font-size: 0.75rem;
-    }
-
-    .payment-row .value {
-        font-size: 0.8rem;
-    }
-
-    .payment-row .amount {
-        font-size: 0.85rem;
-    }
-
-    #payNowBtn {
-        margin-top: 0.1rem;
-        padding: 0.6rem;
-        font-size: 0.8rem;
-    }
-
-    #paymentMessage {
-        font-size: 0.75rem;
-        margin-top: 0.05rem;
-    }
-}
-
-/* Mobile Portrait - 320px to 479px */
-@media (max-width: 479px) {
-    .payment-section {
-        padding-top: 5rem;
-    }
-
-    .payment-wrap {
-        padding: 0.6rem 0 0.8rem;
-    }
-
-    .payment-box.booking-form {
-        max-width: 100%;
-        padding: 0.8rem;
-        border-radius: 8px;
-    }
-
-    .payment-box h2 {
-        font-size: 1.3rem;
-        margin-bottom: 0.08rem;
-    }
-
-    .payment-subtitle {
-        font-size: 0.7rem;
-        margin-bottom: 0.4rem;
-    }
-
-    .payment-summary {
-        padding: 4px;
-        margin-bottom: 0.15rem;
-    }
-
-    .payment-row {
-        gap: 0.2rem;
-        margin-bottom: 0;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .payment-row + .payment-row {
-        margin-top: 0.2rem;
-        padding-top: 0.2rem;
-    }
-
-    .payment-row .label {
-        font-size: 0.7rem;
-        margin-bottom: 0.1rem;
-    }
-
-    .payment-row .value {
-        font-size: 0.75rem;
-    }
-
-    .payment-row .amount {
-        font-size: 0.8rem;
-    }
-
-    #payNowBtn {
-        margin-top: 0.08rem;
-        padding: 0.5rem;
-        font-size: 0.75rem;
-    }
-
-    #paymentMessage {
-        font-size: 0.7rem;
-        margin-top: 0.03rem;
-    }
-}
-
-/* Small Mobile - 320px and below */
-@media (max-width: 320px) {
-    .payment-box h2 {
-        font-size: 1.2rem;
-    }
-
-    .payment-subtitle {
-        font-size: 0.65rem;
-    }
-
-    .payment-row .label {
-        font-size: 0.65rem;
-    }
-
-    .payment-row .value {
-        font-size: 0.7rem;
-    }
-
-    .payment-row .amount {
-        font-size: 0.75rem;
-    }
-
-    #payNowBtn {
-        padding: 0.4rem;
-        font-size: 0.7rem;
-    }
-
-    #paymentMessage {
-        font-size: 0.65rem;
-    }
-}
-
-/* Touch Devices */
-@media (hover: none) and (pointer: coarse) {
-    #payNowBtn {
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-/* Print Styles */
-@media print {
-    .payment-section {
-        padding-top: 0;
-    }
-
-    .payment-box.booking-form {
-        box-shadow: none;
-        border: 1px solid #ccc;
-    }
-
-    #payNowBtn {
-        display: none;
-    }
-}
-
-@media (max-width: 640px) {
+/* ═══════════════════════════════════════════
+   PAYMENT PAGE — MOBILE (≤ 767px)
+═══════════════════════════════════════════ */
+@media (max-width: 767px) {
   .payment-section {
-    padding-top: 6.8rem;
+    padding-top: 56px;
+    min-height: 100vh;
+  }
+
+  .payment-wrap {
+    padding: 1.5rem 16px 3rem;
   }
 
   .payment-box.booking-form {
     max-width: 100%;
+    padding: 1.4rem 1.2rem;
+    border-radius: 16px;
   }
+
+  .payment-box h2 { font-size: 1.5rem; }
+  .payment-subtitle { font-size: 0.85rem; }
+
+  .payment-summary {
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .payment-row { gap: 0.5rem; }
+  .payment-row .label  { font-size: 0.85rem; }
+  .payment-row .value  { font-size: 0.9rem; }
+  .payment-row .amount { font-size: 1rem; }
+
+  #payNowBtn {
+    margin-top: 1rem;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    width: 100%;
+    min-height: 52px;
+  }
+
+  #paymentMessage { font-size: 0.88rem; margin-top: 0.8rem; }
 }

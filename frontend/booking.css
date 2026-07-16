@@ -272,232 +272,128 @@
     border-radius: 8px;
 }
 
-/* Tablet Landscape - 768px to 979px */
-@media (max-width: 979px) and (min-width: 768px) {
-    .booking {
-        padding-top: 6.5rem;
-    }
+/* ═══════════════════════════════════════════
+   BOOKING PAGE — MOBILE (≤ 767px)
+═══════════════════════════════════════════ */
+@media (max-width: 767px) {
+  .booking {
+    padding-top: 56px;
+    background: var(--container-color);
+    min-height: 100vh;
+  }
 
-    .booking-hero {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "image"
-            "details"
-            "actions";
-        gap: 1rem;
-        padding: 1.5rem 0 2rem;
-    }
+  .booking-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 0 2rem;
+  }
 
-    .booking-title {
-        font-size: 2rem;
-    }
+  /* Bike image — full width hero banner */
+  .booking-image-wrap {
+    width: 100%;
+    background: var(--container-color);
+    padding: 1.2rem 1rem 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
 
-    .booking-description {
-        font-size: 0.9rem;
-    }
+  .booking-image-wrap img {
+    height: 200px;
+    width: 100%;
+    object-fit: contain;
+  }
 
-    .booking-spec-grid {
-        gap: 0.6rem;
-    }
+  /* Details block */
+  .booking-data {
+    padding: 1rem 16px 0;
+    gap: 0.8rem;
+  }
 
-    .booking-spec-item {
-        padding: 8px 10px;
-    }
+  .booking-title {
+    font-size: 1.8rem;
+    line-height: 1.1;
+  }
 
-    .booking-spec-item h3 {
-        font-size: 0.75rem;
-    }
+  .booking-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
 
-    .booking-image-wrap img {
-        height: 350px;
-    }
+  /* Specs — horizontal row */
+  .booking-spec-grid {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .booking-spec-grid::-webkit-scrollbar { display: none; }
 
-    .booking-actions {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
+  .booking-spec-item {
+    flex: 0 0 auto;
+    min-width: 90px;
+    border-left: 3px solid var(--second-color);
+    background: var(--bg-color);
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .booking-spec-item h3 { font-size: 0.65rem; }
+  .booking-spec-item p  { font-size: 0.85rem; }
+
+  .booking-price { font-size: 1.2rem; }
+
+  /* Actions — stacked full width */
+  .booking-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 1rem 16px 0;
+    grid-template-columns: unset;
+  }
+
+  .booking-form, .pickup-box, .login-prompt {
+    border-radius: 14px;
+    padding: 16px;
+    width: 100%;
+  }
+
+  .booking-form input {
+    padding: 13px 14px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  .booking-form button {
+    padding: 14px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .price-box {
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  #pickupMap { height: 180px; }
+
+  .login-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
 }
 
-/* Tablet Portrait - 600px to 767px */
-@media (max-width: 767px) and (min-width: 600px) {
-    .booking {
-        padding-top: 6rem;
-    }
-
-    .booking-hero {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "image"
-            "details"
-            "actions";
-        gap: 0.8rem;
-        padding: 1rem 0 1.5rem;
-    }
-
-    .booking-title {
-        font-size: 1.8rem;
-    }
-
-    .booking-description {
-        font-size: 0.85rem;
-    }
-
-    .booking-spec-grid {
-        gap: 0.5rem;
-    }
-
-    .booking-spec-item {
-        padding: 6px 8px;
-    }
-
-    .booking-spec-item h3 {
-        font-size: 0.7rem;
-    }
-
-    .booking-image-wrap img {
-        height: 300px;
-    }
-
-    .booking-actions {
-        grid-template-columns: 1fr;
-        gap: 0.6rem;
-    }
-}
-
-/* Mobile Landscape - 480px to 599px */
-@media (max-width: 599px) and (min-width: 480px) {
-    .booking {
-        padding-top: 5.5rem;
-    }
-
-    .booking-hero {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "image"
-            "details"
-            "actions";
-        gap: 0.6rem;
-        padding: 0.8rem 0 1rem;
-    }
-
-    .booking-title {
-        font-size: 1.6rem;
-    }
-
-    .booking-description {
-        font-size: 0.8rem;
-    }
-
-    .booking-spec-grid {
-        gap: 0.4rem;
-    }
-
-    .booking-spec-item {
-        padding: 5px 6px;
-    }
-
-    .booking-spec-item h3 {
-        font-size: 0.65rem;
-    }
-
-    .booking-image-wrap img {
-        height: 250px;
-    }
-
-    .booking-actions {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-    }
-}
-
-/* Mobile Portrait - 320px to 479px */
-@media (max-width: 479px) {
-    .booking {
-        padding-top: 5rem;
-    }
-
-    .booking-hero {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "image"
-            "details"
-            "actions";
-        gap: 0.5rem;
-        padding: 0.6rem 0 0.8rem;
-    }
-
-    .booking-title {
-        font-size: 1.4rem;
-    }
-
-    .booking-description {
-        font-size: 0.75rem;
-    }
-
-    .booking-spec-grid {
-        gap: 0.3rem;
-    }
-
-    .booking-spec-item {
-        padding: 4px 6px;
-    }
-
-    .booking-spec-item h3 {
-        font-size: 0.6rem;
-    }
-
-    .booking-image-wrap img {
-        height: 200px;
-    }
-
-    .booking-actions {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-    }
-}
-
-/* Small Mobile - 320px and below */
-@media (max-width: 320px) {
-    .booking-title {
-        font-size: 1.2rem;
-    }
-
-    .booking-description {
-        font-size: 0.7rem;
-    }
-
-    .booking-spec-item h3 {
-        font-size: 0.55rem;
-    }
-
-    .booking-image-wrap img {
-        height: 180px;
-    }
-}
-
-/* Touch Devices */
-@media (hover: none) and (pointer: coarse) {
-    .booking-actions button,
-    .booking-actions a {
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-}
-
-/* Print Styles */
-@media print {
-    .booking {
-        padding-top: 0;
-    }
-
-    .booking-hero {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .booking-actions {
-        display: none;
-    }
+@media (max-width: 380px) {
+  .booking-title { font-size: 1.5rem; }
+  .booking-image-wrap img { height: 160px; }
 }

@@ -148,6 +148,12 @@ section {
     gap: 1.5rem;
 }
 
+.home-title {
+    font-family: "Racing Sans One", sans-serif;
+    font-size: 5.2rem;
+    line-height: 4rem;
+}
+
 .home h1{
     font-family: "Racing Sans One", sans-serif;
     font-size: 5.2rem;
@@ -724,479 +730,374 @@ section {
     }
 }
 
-/* Tablet Portrait - 600px to 767px */
-@media (max-width: 767px) and (min-width: 600px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .nav {
-        padding: 12px 0;
-    }
-    
-    .navbar {
-        display: none;
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        background: var(--container-color);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-        border-bottom: 1px solid #e1dbd2;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        z-index: 99;
-    }
-    
-    .navbar.show {
-        display: flex;
-    }
-    
-    .nav-link {
-        font-size: 1rem;
-        padding: 10px 0;
-        width: 100%;
-        border-bottom: 1px solid #e1dbd2;
-    }
-    
-    .nav-link:last-child {
-        border-bottom: none;
-    }
-    
-    .sign-up {
-        display: none;
-    }
-    
-    .mobile-sign-up {
-        display: block;
-        background: var(--main-color);
-        color: white;
-        text-align: center;
-        padding: 12px;
-        margin-top: 10px;
-        border-radius: 8px;
-    }
-    
-    .menu-icon {
-        display: flex;
-    }
-    
-    .home {
-        padding-top: 6rem !important;
-    }
-    
-    .home h1 {
-        font-size: 2.8rem;
-        line-height: 2.5rem;
-        text-align: center;
-    }
-    
-    .home-content {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1.5rem;
-    }
-    
-    .home-img {
-        max-width: 400px;
-    }
-    
-    .home-data {
-        text-align: center;
-    }
-    
-    .home-btns {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .bikes-content {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1rem;
-    }
-    
-    .bike-box {
-        padding: 10px;
-    }
-    
-    .bike-img {
-        height: 160px;
-    }
-    
-    .title-price {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .destination-content,
-    .reviews-content {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-    }
-    
-    .heading {
-        text-align: center;
-        margin-bottom: 1.5rem;
-    }
-    
-    .heading h2 {
-        font-size: 1.5rem;
-    }
-    
-    .heading span {
-        font-size: 0.9rem;
-    }
-    
-    section {
-        padding: 1.5rem 0 1rem;
-    }
+/* ═══════════════════════════════════════════════════════════
+   MOBILE-FIRST FLUID LAYOUT  (≤ 767px)
+   matches the reference screenshot layout exactly
+═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+
+  /* ── Container ── */
+  .container { padding: 0 16px; }
+
+  /* ── Header / Nav ── */
+  .nav {
+    padding: 12px 0;
+    min-height: 56px;
+  }
+
+  .logo { padding: 0 16px; }
+  .logo img { width: 80px; height: auto; }
+
+  /* Hide desktop nav links, show hamburger */
+  .navbar {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    background: var(--container-color);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.2rem 1.5rem;
+    border-bottom: 1px solid #e1dbd2;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    z-index: 99;
+    gap: 0;
+  }
+
+  .navbar.show { display: flex; }
+
+  .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 0;
+    width: 100%;
+    border-bottom: 1px solid #e1dbd2;
+    color: var(--text-color);
+  }
+
+  .nav-link:last-of-type { border-bottom: none; }
+
+  /* Hide desktop sign-up, show mobile one inside nav */
+  .sign-up { display: none; }
+  .mobile-sign-up {
+    display: block;
+    background: var(--text-color);
+    color: #fff;
+    text-align: center;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    border-radius: 0;
+  }
+
+  /* Show hamburger */
+  .menu-icon { display: flex; margin-right: 16px; }
+
+  /* ── Hero section ── */
+  .home {
+    padding-top: 56px !important;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  /* Title row: big italic title on left, bike image on right */
+  .home-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 16px 0;
+    gap: 0.5rem;
+  }
+
+  .home h1 {
+    font-size: 2.4rem;
+    line-height: 1.1;
+    font-style: italic;
+    text-align: left;
+    flex: 1;
+  }
+
+  /* Reorder home-content for mobile */
+  .home-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 0;
+    padding: 0 16px;
+  }
+
+  /* Specs on left */
+  .home-data {
+    grid-column: 1;
+    grid-row: 1;
+    gap: 0.6rem;
+    align-self: center;
+    text-align: left;
+  }
+
+  .home-box h3 {
+    font-size: 0.72rem;
+    color: var(--text-alter-color);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 1px;
+  }
+
+  .home-box h2 {
+    font-size: 0.82rem;
+    color: var(--second-color);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .border-home {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e1dbd2;
+  }
+
+  /* Bike image on right */
+  .home-img {
+    grid-column: 2;
+    grid-row: 1;
+    max-width: 100%;
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    object-position: center right;
+  }
+
+  /* Helmet box — full width horizontal card */
+  .helmet-box {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background: var(--bg-color);
+    border-radius: 12px;
+    padding: 10px 16px;
+    margin: 12px 0 4px;
+    gap: 14px;
+    display: flex;
+  }
+
+  .helmet-box::after { display: none; }
+
+  .helmet-box img {
+    max-width: 70px;
+    width: 70px;
+    height: 60px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .helmet-box a {
+    max-width: unset;
+    background: transparent;
+    padding: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .helmet-box a::before {
+    content: 'Helmet X';
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  /* The actual link text becomes price */
+  .helmet-box a {
+    font-size: 0.85rem;
+    color: var(--second-color);
+    font-weight: 600;
+  }
+
+  /* Buttons — full width, stacked */
+  .home-btns {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px 20px;
+    width: 100%;
+  }
+
+  .home-btns a {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 0;
+  }
+
+  .dealer-btn { background: var(--third-color); }
+  .ride-btn   { background: var(--bg-color); border: 1px solid #e1dbd2; }
+
+  /* ── Bikes section ── */
+  section { padding: 1.2rem 0 1rem; }
+
+  .heading {
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .heading span { font-size: 0.78rem; }
+  .heading h2   { font-size: 1.3rem; }
+
+  /* Search bar full width */
+  .bikes-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-box { flex: 1 1 auto; }
+
+  /* Filter chips — horizontal scroll */
+  .filter-group {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filter-group::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+  }
+
+  /* Price range centered */
+  .price-filter { align-items: flex-start; }
+  .price-filter input[type="range"] { width: 100%; max-width: 100%; }
+
+  /* Bikes grid — horizontal scroll like the screenshot */
+  .bikes-content {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    /* Show partial next card as scroll hint */
+    padding-right: 32px;
+  }
+  .bikes-content::-webkit-scrollbar { display: none; }
+
+  .bike-box {
+    flex: 0 0 140px;
+    min-width: 140px;
+    padding: 10px 10px 8px;
+    border-radius: 10px;
+    max-width: unset;
+    margin: 0;
+  }
+
+  .bike-img {
+    height: 100px;
+    object-fit: contain;
+  }
+
+  /* Show availability badge */
+  .tag {
+    font-size: 0.62rem;
+    padding: 1px 7px;
+    border-radius: 4px;
+  }
+
+  .title-data h2 {
+    font-size: 0.85rem;
+    min-height: unset;
+    margin-bottom: 2px;
+    line-height: 1.2;
+  }
+
+  .title-data p {
+    font-size: 0.72rem;
+    min-height: unset;
+  }
+
+  .bike-price {
+    font-size: 0.88rem;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .bike-price span { font-size: 0.65rem; }
+
+  .title-price {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+
+  .book-btn {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+  }
+
+  /* Destination & Reviews — horizontal scroll */
+  .destination-content,
+  .reviews-content {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+  }
+
+  .destination-content::-webkit-scrollbar,
+  .reviews-content::-webkit-scrollbar { display: none; }
+
+  .destination-card,
+  .review-card {
+    flex: 0 0 220px;
+    min-width: 220px;
+    padding: 0.9rem;
+    margin: 0;
+    max-width: unset;
+    border-radius: 10px;
+  }
+
+  /* Footer */
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-links { justify-content: center; }
+  .scroll-top { bottom: 1rem; right: 1rem; width: 40px; height: 40px; font-size: 1rem; }
 }
 
-/* Mobile Landscape - 480px to 599px */
-@media (max-width: 599px) and (min-width: 480px) {
-    .container {
-        padding: 0 12px;
-    }
-    
-    .nav {
-        padding: 10px 0;
-    }
-    
-    .logo {
-        padding: 0 12px;
-    }
-    
-    .logo img {
-        width: 60px;
-        height: 30px;
-    }
-    
-    .home {
-        padding-top: 5rem !important;
-    }
-    
-    .home h1 {
-        font-size: 2.2rem;
-        line-height: 2rem;
-    }
-    
-    .home-content {
-        gap: 1rem;
-    }
-    
-    .home-img {
-        max-width: 350px;
-    }
-    
-    .home-box h3 {
-        font-size: 0.8rem;
-    }
-    
-    .home-box h2 {
-        font-size: 0.9rem;
-    }
-    
-    .bikes-content {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 0.8rem;
-    }
-    
-    .bike-box {
-        padding: 8px;
-    }
-    
-    .bike-img {
-        height: 140px;
-    }
-    
-    .title-data h2 {
-        font-size: 1rem;
-        min-height: 35px;
-    }
-    
-    .title-data p{
-        font-size: 0.75rem;
-        min-height: 18px;
-    }
-    
-    .bike-price {
-        font-size: 0.9rem;
-    }
-    
-    .book-btn {
-        padding: 10px;
-        font-size: 0.8rem;
-    }
-    
-    .destination-content,
-    .reviews-content {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 0.8rem;
-    }
-    
-    .destination-card,
-    .review-card {
-        padding: 0.8rem;
-    }
-    
-    .destination-card h3,
-    .review-card h3 {
-        font-size: 1rem;
-    }
-    
-    .destination-card p,
-    .review-card p {
-        font-size: 0.85rem;
-    }
-    
-    .review-card span {
-        font-size: 0.75rem;
-    }
-    
-    .heading h2 {
-        font-size: 1.4rem;
-    }
-    
-    .heading span {
-        font-size: 0.9rem;
-    }
-    
-    section {
-        padding: 1rem 0 0.8rem;
-    }
-}
-
-/* Mobile Portrait - 320px to 479px */
-@media (max-width: 479px) {
-    .container {
-        padding: 0 10px;
-    }
-    
-    .nav {
-        padding: 8px 0;
-    }
-    
-    .logo {
-        padding: 0 10px;
-    }
-    
-    .logo img {
-        width: 50px;
-        height: 25px;
-    }
-    
-    .menu-icon div {
-        width: 20px;
-        height: 2px;
-    }
-    
-    .home {
-        padding-top: 4rem !important;
-    }
-    
-    .home h1 {
-        font-size: 1.8rem;
-        line-height: 1.6rem;
-    }
-    
-    .home-content {
-        gap: 0.8rem;
-    }
-    
-    .home-img {
-        max-width: 300px;
-    }
-    
-    .home-box h3 {
-        font-size: 0.75rem;
-    }
-    
-    .home-box h2 {
-        font-size: 0.85rem;
-    }
-    
-    .home-btns {
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .home-btns a {
-        width: 200px;
-        justify-content: center;
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    .bikes-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .bike-box {
-        padding: 15px;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    
-    .bike-img {
-        height: 200px;
-    }
-    
-    .title-data h2 {
-        font-size: 1.1rem;
-        min-height: 40px;
-    }
-    
-    .title-data p{
-        font-size: 0.8rem;
-        min-height: 20px;
-    }
-    
-    .bike-price {
-        font-size: 1rem;
-    }
-    
-    .book-btn {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    .tag {
-        font-size: 0.65rem;
-        padding: 1px 8px;
-    }
-    
-    .destination-content,
-    .reviews-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .destination-card,
-    .review-card {
-        padding: 1rem;
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    
-    .destination-card h3,
-    .review-card h3 {
-        font-size: 1.1rem;
-    }
-    
-    .destination-card p,
-    .review-card p {
-        font-size: 0.9rem;
-    }
-    
-    .review-card span {
-        font-size: 0.8rem;
-    }
-    
-    .heading h2 {
-        font-size: 1.3rem;
-    }
-    
-    .heading span {
-        font-size: 0.85rem;
-    }
-    
-    section {
-        padding: 1rem 0 0.5rem;
-    }
-    
-    .helmet-box img {
-        max-width: 250px;
-    }
-    
-    .helmet-box::after {
-        top: 50px;
-        width: 150px;
-        height: 154px;
-    }
-    
-    .helmet-box a {
-        font-size: 0.8rem;
-        padding: 2px 6px;
-    }
-}
-
-/* Small Mobile - 320px and below */
-@media (max-width: 320px) {
-    .container {
-        padding: 0 8px;
-    }
-    
-    .home h1 {
-        font-size: 1.6rem;
-        line-height: 1.4rem;
-    }
-    
-    .bike-box {
-        padding: 10px;
-    }
-    
-    .bike-img {
-        height: 180px;
-    }
-    
-    .title-data h2 {
-        font-size: 1rem;
-    }
-    
-    .title-data p{
-        font-size: 0.75rem;
-    }
-    
-    .bike-price {
-        font-size: 1rem;
-    }
-    
-    .book-btn {
-        padding: 10px;
-        font-size: 0.8rem;
-    }
-    
-    .destination-card h3,
-    .review-card h3 {
-        font-size: 1rem;
-    }
-    
-    .destination-card p,
-    .review-card p {
-        font-size: 0.85rem;
-    }
-    
-    .review-card span {
-        font-size: 0.75rem;
-    }
-    
-    .heading h2 {
-        font-size: 1.2rem;
-    }
-    
-    .heading span {
-        font-size: 0.85rem;
-    }
-    
-    .helmet-box img {
-        max-width: 250px;
-    }
-    
-    .helmet-box::after {
-        top: 50px;
-        width: 150px;
-        height: 154px;
-    }
-    
-    .helmet-box a {
-        font-size: 0.8rem;
-        padding: 2px 6px;
-    }
+/* Extra small phones ≤ 380px */
+@media (max-width: 380px) {
+  .home h1 { font-size: 2rem; }
+  .home-img { height: 130px; }
+  .bike-box { flex: 0 0 125px; min-width: 125px; }
+  .bike-img { height: 85px; }
+  .title-data h2 { font-size: 0.78rem; }
 }
 
 /* High DPI Displays */
