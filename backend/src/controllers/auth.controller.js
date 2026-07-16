@@ -3,9 +3,10 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
 import { generateOTP, sendSMSOTP } from '../utils/otp.js';
 import { isAdminUser } from '../middleware/auth.js';
+import { env } from '../config/env.js';
 
 const saltRounds = 10;
-const jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
+const jwtSecret = env.jwtSecret;
 
 // Helper function to generate JWT token
 function generateToken(userId, email) {

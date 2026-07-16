@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: torque-rentals-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DATABASE_URL
+        sync: false        # set manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false        # set manually in Render dashboard
+      - key: CORS_ORIGIN
+        sync: false        # set to your frontend URL
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false

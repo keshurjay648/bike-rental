@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../config/db.js';
 import { env } from '../config/env.js';
 
-const jwtSecret = process.env.JWT_SECRET || 'your-secret-key';
+const jwtSecret = env.jwtSecret;
 
 function isAdminUser(user) {
   if (!user) return false;
