@@ -536,8 +536,32 @@ async function confirmBooking() {
         throw new Error(payload.message || "Failed to create booking");
       }
 
-      localStorage.setItem("booking", JSON.stringify(payload.data));
-      localStorage.setItem("currentBooking", JSON.stringify(payload.data));
+      localStorage.setItem("booking", JSON.stringify({
+        ...payload.data,
+        bikeName:      selectedBike.name,
+        bikeImage:     selectedBike.image || img,
+        bikeType:      selectedBike.type  || '',
+        bikePrice:     price,
+        customerName,
+        customerEmail,
+        totalHours:    payload.data.total_hours,
+        totalPrice:    payload.data.total_amount,
+        startDate:     payload.data.start_date,
+        endDate:       payload.data.end_date
+      }));
+      localStorage.setItem("currentBooking", JSON.stringify({
+        ...payload.data,
+        bikeName:      selectedBike.name,
+        bikeImage:     selectedBike.image || img,
+        bikeType:      selectedBike.type  || '',
+        bikePrice:     price,
+        customerName,
+        customerEmail,
+        totalHours:    payload.data.total_hours,
+        totalPrice:    payload.data.total_amount,
+        startDate:     payload.data.start_date,
+        endDate:       payload.data.end_date
+      }));
       if (window.showToast) showToast('Booking confirmed! Redirecting…', 'success');
       setMessage("Booking created. Redirecting to payment...");
       setTimeout(() => { window.location.href = "payment.html"; }, 800);

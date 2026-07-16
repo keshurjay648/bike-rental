@@ -29,6 +29,11 @@ function setMsg(text, isError = false) {
 }
 
 /* ── Populate all summary fields ─────────────────────────── */
+let _custName  = "";
+let _custEmail = "";
+let _bookingAmount = 0;
+let _bikeName = "";
+
 function populateSummary() {
   if (!booking) {
     setMsg("No booking found. Please go back and create a booking.", true);
@@ -36,26 +41,36 @@ function populateSummary() {
     return;
   }
 
-  // Bike details
-  const bikeName  = booking.bikeName  || booking.bike_name  || "—";
-  const bikeType  = booking.bikeType  || booking.bike_type  || "—";
-  const bikeImg   = booking.bikeImage || booking.bike_image || "img/harly.png";
-  const bikePrice = Number(booking.bikePrice || booking.price_per_hour || 0);
+  // Bike details — try both camelCase (local) and snake_case (backend)
+  const bikeName  = booking.bikeName  || booking.bike_name  || booking.name  || "—";
+  const bikeType  = booking.bikeType  || booking.bike_type  || booking.type  || "—";
+  const bikeImg   = booking.bikeImage || booking.bike_image || booking.image_url || "img/harly.png";
+  const bikePrice = Number(booking.bikePrice || booking.price_per_hour || booking.pricePerHour || 0);
   const hours     = Number(booking.totalHours || booking.total_hours || 0);
   const amount    = Number(booking.totalPrice || booking.total_amount || booking.total_price || 0);
+  const custName  = booking.customerName  || booking.customer_name  || "—";
+  const custEmail = booking.customerEmail || booking.customer_email || "—";
+  const start     = booking.startDate || booking.start_date;
+  const end       = booking.endDate   || booking.end_date;
+
+  // hoist to module scope for startPayment
+  _custName  = custName;
+  _custEmail = custEmail;
+  _bookingAmount = amount;
+  _bikeName = bikeName;
 
   setText("summaryBikeName", bikeName);
   setText("summaryBikeType", bikeType);
   setImg("summaryBikeImg",   bikeImg, bikeName);
 
   // Trip details
-  setText("summaryPickup",   fmt(booking.startDate || booking.start_date));
-  setText("summaryDrop",     fmt(booking.endDate   || booking.end_date));
+  setText("summaryPickup",   fmt(start));
+  setText("summaryDrop",     fmt(end));
   setText("summaryDuration", hours ? `${hours} hour${hours !== 1 ? "s" : ""}` : "—");
 
   // Customer
-  setText("summaryName",  booking.customerName  || booking.customer_name  || "—");
-  setText("summaryEmail", booking.customerEmail || booking.customer_email || "—");
+  setText("summaryName",  custName);
+  setText("summaryEmail", custEmail);
 
   // Price breakdown
   setText("pricePerHourLabel", bikePrice && hours
@@ -172,8 +187,8 @@ async function startPayment() {
         }
       },
       prefill: {
-        name:  booking.customerName  || booking.customer_name  || "",
-        email: booking.customerEmail || booking.customer_email || ""
+        name:  custName,
+        email: custEmail
       },
       notes: {
         bike: booking.bikeName || booking.bike_name || ""
