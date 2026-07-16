@@ -238,8 +238,10 @@ section {
     color: var(--text-color);
     background: var(--third-color);
     padding: 2px 8px;
-
 }
+
+.helmet-name { display: none; }
+.helmet-price { display: block; }
 
 .helmet-box i {
     font-size: 18px;
@@ -892,14 +894,28 @@ section {
     background: transparent;
     padding: 0;
     max-width: unset;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--second-color);
     text-transform: none;
   }
 
-  /* Override the ::before trick — show clean text */
   .helmet-box a::before { display: none; }
+
+  .helmet-name {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  .helmet-price {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--second-color);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .helmet-price i { font-size: 0.9rem; }
 
   /* Buttons — full width stacked */
   .home-btns {
