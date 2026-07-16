@@ -55,6 +55,8 @@ class AuthEnhancements {
     // Form animations and interactions
     setupFormAnimations() {
         const form = document.getElementById('loginForm');
+        if (!form) return; // not on login page
+
         const inputs = form.querySelectorAll('input');
 
         // Add focus animations
